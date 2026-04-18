@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue-950: #020f1f;
+  --blue-900: #042C53;
+  --blue-800: #0C447C;
+  --blue-700: #185FA5;
+  --blue-600: #1e74c8;
+  --blue-500: #378ADD;
+  --blue-400: #5ba3e8;
+  --blue-200: #85B7EB;
+  --blue-100: #B5D4F4;
+  --blue-50:  #E6F1FB;
+  --teal-600: #0F6E56;
+  --teal-400: #1D9E75;
+  --teal-100: #9FE1CB;
+  --teal-50:  #E1F5EE;
+  --white: #ffffff;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-400: #94a3b8;
+  --gray-600: #475569;
+  --gray-800: #1e293b;
+  --font: 'Sora', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--gray-800);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%;
+  height: 68px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--blue-50);
+  box-shadow: 0 1px 24px rgba(4,44,83,0.06);
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font); font-weight: 700; font-size: 22px;
+  color: var(--blue-800); text-decoration: none; letter-spacing: -0.5px;
+}
+
+.nav-logo svg { width: 34px; height: 34px; }
+
+.nav-links {
+  display: flex; align-items: center; gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-body); font-size: 14px; font-weight: 400;
+  color: var(--gray-600); text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--blue-700); }
+
+.nav-cta {
+  background: var(--blue-700);
+  color: var(--white) !important;
+  padding: 9px 22px; border-radius: 8px;
+  font-weight: 500 !important; font-size: 14px !important;
+  transition: background .2s, transform .15s !important;
+}
+.nav-cta:hover { background: var(--blue-800) !important; transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  position: relative; overflow: hidden;
+  padding: 100px 5% 90px;
+  background: linear-gradient(160deg, #f0f7ff 0%, #e8f4ff 40%, #d6ecff 100%);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+  align-items: center; min-height: 86vh;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(55,138,221,0.12) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 40% at 10% 80%, rgba(29,158,117,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(24,95,165,0.1); border: 1px solid rgba(24,95,165,0.2);
+  color: var(--blue-800); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.6px; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 100px; margin-bottom: 24px;
+}
+
+.hero-badge span { width: 6px; height: 6px; background: var(--teal-400); border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+.hero h1 {
+  font-family: var(--font); font-size: clamp(36px,5vw,56px);
+  font-weight: 700; line-height: 1.1; letter-spacing: -1.5px;
+  color: var(--blue-900); margin-bottom: 22px;
+}
+
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--blue-600), var(--teal-400));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.hero p {
+  font-size: 17px; font-weight: 300; color: var(--gray-600);
+  max-width: 480px; margin-bottom: 40px; line-height: 1.8;
+}
+
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--blue-700); color: var(--white);
+  font-family: var(--font); font-size: 15px; font-weight: 600;
+  padding: 14px 28px; border-radius: 10px;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background .2s, transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 20px rgba(24,95,165,0.3);
+}
+.btn-primary:hover { background: var(--blue-800); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(24,95,165,0.35); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--blue-700);
+  font-family: var(--font); font-size: 15px; font-weight: 500;
+  padding: 13px 26px; border-radius: 10px;
+  border: 1.5px solid rgba(24,95,165,0.3); text-decoration: none;
+  transition: border-color .2s, background .2s, transform .15s;
+}
+.btn-secondary:hover { border-color: var(--blue-700); background: rgba(24,95,165,0.06); transform: translateY(-2px); }
+
+/* Hero visual — app mockup */
+.hero-visual {
+  position: relative; z-index: 1;
+  display: flex; justify-content: center; align-items: center;
+}
+
+.mockup-shell {
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: 0 32px 80px rgba(4,44,83,0.18), 0 8px 24px rgba(4,44,83,0.1);
+  overflow: hidden; width: 100%; max-width: 440px;
+  border: 1px solid var(--blue-100);
+}
+
+.mockup-topbar {
+  background: var(--blue-800);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.mockup-dots { display: flex; gap: 5px; }
+.mockup-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r{background:#ff5f57} .dot-y{background:#febc2e} .dot-g{background:#28c840}
+.mockup-title { font-family: var(--font); font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); flex:1; text-align:center; }
+
+.mockup-content { padding: 20px; }
+
+.mockup-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.mockup-header h3 { font-family: var(--font); font-size: 15px; font-weight: 600; color: var(--blue-900); }
+.mkbadge { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+.mkbadge.blue { background: var(--blue-50); color: var(--blue-800); }
+
+.mockup-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 18px; }
+.mk-stat { background: var(--gray-50); border-radius: 10px; padding: 10px 8px; text-align: center; border: 1px solid var(--gray-100); }
+.mk-stat-num { font-family: var(--font); font-size: 18px; font-weight: 700; color: var(--blue-800); }
+.mk-stat-label { font-size: 9px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+.mk-section-title { font-family: var(--font); font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+
+.mk-appt { display: flex; align-items: center; gap: 10px; background: var(--gray-50); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid var(--gray-100); }
+.mk-appt-color { width: 8px; height: 32px; border-radius: 4px; flex-shrink: 0; }
+.mk-appt-info { flex: 1; }
+.mk-appt-name { font-family: var(--font); font-size: 12px; font-weight: 600; color: var(--blue-900); }
+.mk-appt-sub { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
+.mk-appt-time { font-family: var(--font); font-size: 11px; font-weight: 500; color: var(--blue-700); }
+.mk-tag { font-size: 9px; font-weight: 600; padding: 2px 8px; border-radius: 20px; }
+.mk-tag.c { background: var(--teal-50); color: var(--teal-600); }
+.mk-tag.p { background: #fff7ed; color: #c2410c; }
+.mk-tag.r { background: var(--blue-50); color: var(--blue-700); }
+
+/* ── TRUSTED ── */
+.trusted {
+  padding: 36px 5%;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-100);
+  text-align: center;
+}
+.trusted p { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); margin-bottom: 20px; font-weight: 500; }
+.trusted-logos { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; }
+.tlogo { font-family: var(--font); font-size: 15px; font-weight: 700; color: var(--gray-200); letter-spacing: -0.5px; }
+
+/* ── FEATURES ── */
+.features {
+  padding: 100px 5%;
+  background: var(--gray-50);
+}
+.section-label {
+  text-align: center;
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1.2px; color: var(--blue-600); margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font); font-size: clamp(28px,3.5vw,40px);
+  font-weight: 700; color: var(--blue-900);
+  text-align: center; letter-spacing: -1px;
+  margin-bottom: 14px;
+}
+.section-sub {
+  font-size: 16px; color: var(--gray-600); text-align: center;
+  max-width: 540px; margin: 0 auto 60px; font-weight: 300; line-height: 1.8;
+}
+
+.features-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 24px; max-width: 1100px; margin: 0 auto;
+}
+
+.feat-card {
+  background: var(--white); border-radius: 16px;
+  padding: 32px 28px;
+  border: 1px solid var(--gray-100);
+  transition: transform .25s, box-shadow .25s;
+}
+.feat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(4,44,83,0.1); }
+
+.feat-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px; font-size: 22px;
+}
+.feat-icon.blue { background: var(--blue-50); }
+.feat-icon.teal { background: var(--teal-50); }
+.feat-icon.soft { background: #fff0f6; }
+
+.feat-card h3 { font-family: var(--font); font-size: 17px; font-weight: 600; color: var(--blue-900); margin-bottom: 10px; }
+.feat-card p { font-size: 14px; color: var(--gray-600); line-height: 1.7; font-weight: 300; }
+
+/* ── HOW IT WORKS ── */
+.how {
+  padding: 100px 5%;
+  background: var(--white);
+}
+
+.steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; max-width: 1000px; margin: 0 auto; position: relative; }
+
+.steps::before {
+  content: '';
+  position: absolute; top: 28px; left: 12%; right: 12%;
+  height: 2px; background: linear-gradient(90deg, var(--blue-100), var(--blue-400), var(--blue-100));
+  z-index: 0;
+}
+
+.step { text-align: center; padding: 0 16px; position: relative; z-index: 1; }
+.step-num {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--blue-700); color: var(--white);
+  font-family: var(--font); font-size: 18px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px; box-shadow: 0 4px 16px rgba(24,95,165,0.3);
+}
+.step h4 { font-family: var(--font); font-size: 15px; font-weight: 600; color: var(--blue-900); margin-bottom: 8px; }
+.step p { font-size: 13px; color: var(--gray-600); line-height: 1.6; font-weight: 300; }
+
+/* ── TESTIMONIALS ── */
+.testimonials {
+  padding: 90px 5%;
+  background: linear-gradient(180deg, #f0f7ff 0%, #f8fbff 100%);
+}
+
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; max-width: 1100px; margin: 0 auto; }
+
+.testi-card {
+  background: var(--white); border-radius: 16px; padding: 28px 24px;
+  border: 1px solid var(--blue-100);
+}
+.testi-stars { color: #f59e0b; font-size: 13px; letter-spacing: 2px; margin-bottom: 14px; }
+.testi-card p { font-size: 14px; color: var(--gray-600); font-style: italic; line-height: 1.7; margin-bottom: 20px; font-weight: 300; }
+.testi-author { display: flex; align-items: center; gap: 10px; }
+.testi-avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font); font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.av1 { background: var(--blue-50); color: var(--blue-800); }
+.av2 { background: var(--teal-50); color: var(--teal-600); }
+.av3 { background: #fce7f3; color: #9d174d; }
+.testi-name { font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--blue-900); }
+.testi-role { font-size: 11px; color: var(--gray-400); }
+
+/* ── CTA ── */
+.cta-section {
+  padding: 100px 5%;
+  background: var(--blue-900);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(55,138,221,0.25) 0%, transparent 70%);
+}
+.cta-section h2 {
+  font-family: var(--font); font-size: clamp(28px,4vw,44px);
+  font-weight: 700; color: var(--white); margin-bottom: 16px;
+  letter-spacing: -1px; position: relative; z-index: 1;
+}
+.cta-section p { font-size: 16px; color: rgba(255,255,255,0.65); margin-bottom: 40px; font-weight: 300; position: relative; z-index: 1; }
+.cta-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; z-index: 1; }
+.btn-white {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--white); color: var(--blue-800);
+  font-family: var(--font); font-size: 15px; font-weight: 600;
+  padding: 14px 32px; border-radius: 10px;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: transform .15s, box-shadow .2s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+
+.btn-outline-white {
+  display: inline-flex; align-items: center;
+  background: transparent; color: var(--white);
+  font-family: var(--font); font-size: 15px; font-weight: 500;
+  padding: 13px 28px; border-radius: 10px;
+  border: 1.5px solid rgba(255,255,255,0.35); text-decoration: none;
+  transition: border-color .2s, background .2s;
+}
+.btn-outline-white:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--blue-950);
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+}
+
+.footer-top {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px; padding: 60px 5% 48px; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.footer-brand h3 {
+  font-family: var(--font); font-size: 20px; font-weight: 700;
+  color: var(--white); margin-bottom: 12px; letter-spacing: -0.5px;
+}
+.footer-brand p { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.5); max-width: 280px; margin-bottom: 22px; }
+
+.footer-contact-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 12px; color: rgba(255,255,255,0.5); }
+
+.footer-col h4 {
+  font-family: var(--font); font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: rgba(255,255,255,0.9); margin-bottom: 18px;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; transition: color .2s; }
+.footer-col a:hover { color: var(--blue-200); }
+
+.footer-bottom {
+  padding: 22px 5%;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 14px;
+  background: rgba(0,0,0,0.2);
+}
+
+.footer-legal-links { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer-legal-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 12px; transition: color .2s; }
+.footer-legal-links a:hover { color: rgba(255,255,255,0.7); }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+
+.footer-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.fbadge {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5);
+}
+
+.footer-divider { color: rgba(255,255,255,0.15); }
+
+@media (max-width: 900px) {
+  nav { padding: 0 4%; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 70px 4% 60px; min-height: auto; gap: 40px; }
+  .hero-visual { display: none; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; gap: 30px; }
+  .steps::before { display: none; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+@media (max-width: 600px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="34" height="34" rx="10" fill="#185FA5"/>
+      <path d="M17 7C17 7 10 10.5 10 17.5C10 21.9 13.1 25.5 17 25.5C20.9 25.5 24 21.9 24 17.5C24 10.5 17 7 17 7Z" fill="white" opacity="0.9"/>
+      <path d="M14 19L16.5 21.5L20.5 16" stroke="#185FA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="17" cy="11" r="1.5" fill="#185FA5" opacity="0.6"/>
+    </svg>
+    Todonto
+  </a>
+  <ul class="nav-links">
+    <li><a href="/funciones">Funciones</a></li>
+    <li><a href="/como-funciona">¿Cómo funciona?</a></li>
+    <li><a href="/testimonios">Testimonios</a></li>
+    <li><a href="/contacto">Contacto</a></li>
+    <li><a href="/registrarme" class="nav-cta">Comenzar gratis</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span></span>
+      Plataforma dental pensada para tí
+    </div>
+    <h1>Tu consultorio dental,<br><em>siempre organizado</em></h1>
+    <p>Gestiona citas, historial de pacientes y expedientes clínicos. Diseñado para odontólogos modernos que priorizan la atención a sus pacientes.</p>
+    <div class="hero-btns">
+      <a href="/registrarme" class="btn-primary">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Crear cuenta gratis
+      </a>
+      <a href="/iniciar-sesion" class="btn-secondary">
+        Iniciar sesión
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="mockup-shell">
+      <div class="mockup-topbar">
+        <div class="mockup-dots">
+          <span class="dot-r"></span>
+          <span class="dot-y"></span>
+          <span class="dot-g"></span>
+        </div>
+        <span class="mockup-title">Todonto — Panel principal</span>
+      </div>
+      <div class="mockup-content">
+        <div class="mockup-header">
+          <h3>Buenos días, Dra. Magdalena 👋</h3>
+          <span class="mkbadge blue">Hoy: 8 citas</span>
+        </div>
+        <div class="mockup-stats">
+          <div class="mk-stat"><div class="mk-stat-num">124</div><div class="mk-stat-label">Pacientes</div></div>
+          <div class="mk-stat"><div class="mk-stat-num">8</div><div class="mk-stat-label">Hoy</div></div>
+          <div class="mk-stat"><div class="mk-stat-num">96%</div><div class="mk-stat-label">Asistencia</div></div>
+        </div>
+        <div class="mk-section-title">Próximas citas</div>
+        <div class="mk-appt">
+          <div class="mk-appt-color" style="background: var(--blue-500)"></div>
+          <div class="mk-appt-info">
+            <div class="mk-appt-name">María López</div>
+            <div class="mk-appt-sub">Limpieza dental · 45 min</div>
+          </div>
+          <div style="text-align:right">
+            <div class="mk-appt-time">09:00</div>
+            <div class="mk-tag c" style="margin-top:3px">Confirmada</div>
+          </div>
+        </div>
+        <div class="mk-appt">
+          <div class="mk-appt-color" style="background: var(--teal-400)"></div>
+          <div class="mk-appt-info">
+            <div class="mk-appt-name">Carlos Herrera</div>
+            <div class="mk-appt-sub">Ortodoncia · 60 min</div>
+          </div>
+          <div style="text-align:right">
+            <div class="mk-appt-time">10:00</div>
+            <div class="mk-tag r" style="margin-top:3px">En sala</div>
+          </div>
+        </div>
+        <div class="mk-appt">
+          <div class="mk-appt-color" style="background: #fb923c"></div>
+          <div class="mk-appt-info">
+            <div class="mk-appt-name">Ana Gutiérrez</div>
+            <div class="mk-appt-sub">Extracción · 30 min</div>
+          </div>
+          <div style="text-align:right">
+            <div class="mk-appt-time">11:30</div>
+            <div class="mk-tag p" style="margin-top:3px">Pendiente</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUSTED -->
+<div class="trusted">
+  <p>Utilizado por doctores que gestionan su trabajo de forma digital</p>
+  <div class="trusted-logos">
+    <!-- Ejemplos (modificar cuando tengamos asociaciones.)
+    <span class="tlogo">ClinicaPlus</span>
+    <span class="tlogo">DentalMed</span>
+    <span class="tlogo">OrthoGroup</span>
+    <span class="tlogo">SmilePro</span>
+    <span class="tlogo">BocaSana</span> -->
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="funciones">
+  <div class="section-label">Funcionalidades</div>
+  <h2 class="section-title">Todo lo que tu consultorio necesita</h2>
+  <p class="section-sub">Una plataforma completa para gestionar tu práctica dental de forma eficiente, segura y profesional.</p>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon blue">📅</div>
+      <h3>Agenda inteligente</h3>
+      <p>Organiza citas con recordatorios automáticos por WhatsApp y correo. Reduce inasistencias hasta un 40%.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon teal">🦷</div>
+      <h3>Expedientes clínicos</h3>
+      <p>Historial médico completo, odontograma digital, fotografías y radiografías en un solo expediente por paciente.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon blue">📋</div>
+      <h3>Planes de tratamiento</h3>
+      <p>Crea y presenta planes detallados con costos, etapas y seguimiento. Facilita la aceptación del paciente.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon teal">📊</div>
+      <h3>Reportes y análisis</h3>
+      <p>Dashboards claros con ingresos, pacientes activos, tratamientos más solicitados y métricas clave.</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon blue">🔒</div>
+      <h3>Seguridad y privacidad</h3>
+      <p>Datos cifrados con estándar bancario. Cumplimiento con la Ley Federal de Protección de Datos Personales.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="como-funciona">
+  <div class="section-label">Proceso</div>
+  <h2 class="section-title">Empieza en minutos</h2>
+  <p class="section-sub">Sin instalaciones complicadas. Accede desde cualquier dispositivo con internet.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h4>Crea tu cuenta</h4>
+      <p>Regístrate gratis con tu correo. (requiere tarjeta de crédito o algún método de pago.)</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h4>Configura tu consultorio</h4>
+      <p>Agrega tu logo, horarios, servicios y personal en pocos minutos.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h4>Registra tus pacientes</h4>
+      <p>Importa o captura expedientes fácilmente desde cualquier dispositivo.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h4>Empieza a gestionar</h4>
+      <p>Agenda citas y haz crecer tu práctica dental.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonios">
+  <div class="section-label">Testimonios</div>
+  <h2 class="section-title">Lo que dicen nuestros usuarios</h2>
+  <p class="section-sub">Más de 1,200 odontólogos ya confían en Todonto para gestionar su práctica diaria.</p>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>"Desde que uso Todonto, mis inasistencias bajaron drásticamente. Los recordatorios automáticos funcionan increíblemente bien y mis pacientes lo agradecen."</p>
+      <div class="testi-author">
+        <div class="testi-avatar av1">DR</div>
+        <div><div class="testi-name">Dra. Rosa Mendoza</div><div class="testi-role">Odontóloga general · Guadalajara</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>"El expediente clínico digital es lo que más me ha ayudado. Accedo al historial de mis pacientes desde mi celular antes de que entren al consultorio."</p>
+      <div class="testi-author">
+        <div class="testi-avatar av2">JL</div>
+        <div><div class="testi-name">Dr. Jorge López</div><div class="testi-role">Ortodoncista · Ciudad de México</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p>"La facturación integrada me ahorró contratar a un contador extra. Genero mis CFDI en segundos y tengo todo en orden para declaraciones."</p>
+      <div class="testi-author">
+        <div class="testi-avatar av3">CP</div>
+        <div><div class="testi-name">Dra. Carmen Pérez</div><div class="testi-role">Endodoncista · Monterrey</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Transforma tu consultorio dental hoy</h2>
+  <p>Prueba Todonto gratis durante 7 días. Puedes cancelar en cualquier momento.</p>
+  <div class="cta-btns">
+    <a href="/registrarme" class="btn-white">Comenzar prueba gratuita</a>
+    <a href="/contacto" class="btn-outline-white">Hablar con un asesor</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contacto">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>🦷 Todonto</h3>
+      <p>La plataforma de gestión dental más completa de México. Diseñada por y para odontólogos.</p>
+      <div class="footer-contact-item">📍 Calle San Luis 13, San Luis de la Paz, México, C.P. 37900</div>
+      <div class="footer-contact-item">📞 +52 (468) 138-6739</div>
+      <div class="footer-contact-item">✉️ contacto@todonto.mx</div>
+      <div class="footer-contact-item">🕐 Lun–Vie: 9:00–18:00 CST</div>
+      <div class="footer-badges">
+        <span class="fbadge">SSL Seguro</span>
+        <span class="fbadge">CFDI 4.0</span>
+        <span class="fbadge">LFPDPPP</span>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Producto</h4>
+      <ul>
+        <li><a href="#">Funcionalidades</a></li>
+        <li><a href="#">Precios y planes</a></li>
+        <li><a href="#">Actualizaciones</a></li>
+        <li><a href="#">Aplicación móvil</a></li>
+        <li><a href="#">Integraciones</a></li>
+        <li><a href="#">Estado del servicio</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Soporte</h4>
+      <ul>
+        <li><a href="#">Centro de ayuda</a></li>
+        <li><a href="#">Guías y tutoriales</a></li>
+        <li><a href="#">Webinars gratuitos</a></li>
+        <li><a href="#">API para desarrolladores</a></li>
+        <li><a href="#">Comunidad Todonto</a></li>
+        <li><a href="#">Contactar soporte</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Términos y condiciones</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Aviso de privacidad</a></li>
+        <li><a href="#">Política de cookies</a></li>
+        <li><a href="#">Acuerdo de nivel de servicio</a></li>
+        <li><a href="#">Reporte de vulnerabilidades</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Todonto, S.A. de C.V. · RFC: TOD260101ABC · Todos los derechos reservados.</span>
+    <div class="footer-legal-links">
+      <a href="#">Términos</a>
+      <span class="footer-divider">|</span>
+      <a href="#">Privacidad</a>
+      <span class="footer-divider">|</span>
+      <a href="#">Cookies</a>
+      <span class="footer-divider">|</span>
+      <a href="#">Aviso legal</a>
+      <span class="footer-divider">|</span>
+      <a href="#">Mapa del sitio</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
