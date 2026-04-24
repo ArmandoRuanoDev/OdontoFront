@@ -1,0 +1,227 @@
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="34" height="34" rx="10" fill="#185FA5"/>
+      <path d="M17 7C17 7 10 10.5 10 17.5C10 21.9 13.1 25.5 17 25.5C20.9 25.5 24 21.9 24 17.5C24 10.5 17 7 17 7Z" fill="white" opacity="0.9"/>
+      <path d="M14 19L16.5 21.5L20.5 16" stroke="#185FA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Todonto
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Funciones</a></li>
+    <li><a href="#">¿Cómo funciona?</a></li>
+    <li><a href="#">Testimonios</a></li>
+    <li><a href="#">Contacto</a></li>
+    <li><a href="#" class="nav-cta">Iniciar sesión</a></li>
+  </ul>
+</nav>
+
+<div class="main-layout" style="flex:1;">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="panel-content">
+      <div class="panel-badge"><span></span> Seguridad en cada paso</div>
+      <h2>Tu cuenta está<br>a un paso de <em>estar lista</em></h2>
+      <p>Verificamos tu correo para garantizar la seguridad de tu consultorio y la privacidad de tus pacientes.</p>
+
+      <div class="steps-visual">
+        <div class="step-item done-step">
+          <div class="step-circle done">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          <div class="step-body">
+            <strong>Datos de registro</strong>
+            <span>Información completada correctamente</span>
+          </div>
+        </div>
+        <div class="step-item active-step">
+          <div class="step-circle active">2</div>
+          <div class="step-body">
+            <strong>Verificación de correo</strong>
+            <span>Ingresa el código de 6 dígitos que enviamos</span>
+          </div>
+        </div>
+        <div class="step-item pending-step">
+          <div class="step-circle pending">3</div>
+          <div class="step-body">
+            <strong>Configurar consultorio</strong>
+            <span>Personaliza tu perfil y empieza a usar Todonto</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="security-row">
+        <div class="sec-badge">🔒 Cifrado AES-256</div>
+        <div class="sec-badge">✉️ Código expira en 10 min</div>
+        <div class="sec-badge">🛡️ LFPDPPP</div>
+      </div>
+    </div>
+
+    <div class="panel-quote">
+      <p>"El proceso de registro fue muy sencillo. En menos de 5 minutos ya tenía mi consultorio configurado."</p>
+      <div class="panel-quote-author">
+        <div class="pqa-av">JL</div>
+        <div>
+          <div class="pqa-name">Dr. Jorge López</div>
+          <div class="pqa-role">Ortodoncista · Ciudad de México</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="form-box">
+
+      <!-- Formulario de verificación (oculto si ya se verificó) -->
+      <div *ngIf="!successMessage">
+        <div class="form-header">
+          <div class="email-icon-wrap">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="7" width="26" height="18" rx="3" stroke="#185FA5" stroke-width="1.8"/>
+              <path d="M3 10l13 9 13-9" stroke="#185FA5" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <div class="notif-dot">
+              <svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3-3" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+          <h1>Verifica tu correo</h1>
+          <p>Enviamos un código de 6 dígitos a<br><strong>{{ email }}</strong><br>Revisa también tu carpeta de spam.</p>
+        </div>
+
+        <div class="otp-label">Ingresa el código de verificación <span style="color:#E24B4A">*</span></div>
+        <div class="otp-wrap" (paste)="onPaste($event)">
+          <input *ngFor="let digit of otpDigits; let i = index"
+                 #otpInput
+                 type="text"
+                 maxlength="1"
+                 inputmode="numeric"
+                 pattern="[0-9]"
+                 [(ngModel)]="otpDigits[i]"
+                 (input)="onOtpInput(i, $event)"
+                 (keydown)="onOtpKeydown(i, $event)"
+                 class="otp-input"
+                 [class.filled]="digit"
+                 [class.error]="errorMessage && !digit"
+                 [class.success]="successMessage && digit">
+          <div class="otp-sep" *ngIf="false">—</div>
+        </div>
+
+        <div class="field-msg" [class.error]="errorMessage" [class.info]="!errorMessage && !successMessage" [class.success]="successMessage">
+          <ng-container *ngIf="errorMessage">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/><path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
+            {{ errorMessage }}
+          </ng-container>
+          <ng-container *ngIf="!errorMessage && !successMessage">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#94a3b8" stroke-width="1.3"/><path d="M6 5.5v3M6 4h.01" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/></svg>
+            El código tiene una validez de 10 minutos
+          </ng-container>
+          <ng-container *ngIf="successMessage && !errorMessage">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#3B6D11" stroke-width="1.3"/><path d="M3.5 6l2 2 3-3" stroke="#3B6D11" stroke-width="1.3" stroke-linecap="round"/></svg>
+            {{ successMessage }}
+          </ng-container>
+        </div>
+
+        <!-- Timer -->
+        <div class="timer-row">
+          <div class="timer-bar-bg"><div class="timer-bar" [style.width.%]="getTimerPercentage()"></div></div>
+          <div class="timer-text">Código válido por <strong>{{ getFormattedTime() }}</strong></div>
+        </div>
+
+        <button class="btn-verify" (click)="verifyCode()" [disabled]="isLoading || codeExpired">
+          {{ isLoading ? 'Verificando...' : 'Verificar correo' }}
+        </button>
+
+        <button class="btn-resend" (click)="resendCode()" [disabled]="!canResend || isLoading">
+          Reenviar código
+        </button>
+
+        <div class="sep"></div>
+        <div class="back-row">
+          <a routerLink="/registro">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Volver y cambiar correo
+          </a>
+        </div>
+      </div>
+
+      <!-- Estado de éxito (se muestra cuando successMessage tiene valor) -->
+      <div *ngIf="successMessage" class="success-state" style="display:block">
+        <div class="success-circle">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><path d="M8 17l6 6 12-12" stroke="#3B6D11" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <h2>¡Correo verificado!</h2>
+        <p>Tu cuenta ha sido confirmada exitosamente.<br>Ya puedes acceder a tu panel de Todonto.</p>
+        <button class="btn-dashboard" (click)="redirectToPlan()">
+          Ir a mi panel
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>🦷 Todonto</h3>
+      <p>La plataforma de gestión dental más completa de México. Diseñada por y para odontólogos.</p>
+      <div class="footer-contact-item">📍 Av. Insurgentes Sur 1457, CDMX, C.P. 03920</div>
+      <div class="footer-contact-item">📞 +52 (55) 1234-5678</div>
+      <div class="footer-contact-item">✉️ contacto@todonto.mx</div>
+      <div class="footer-contact-item">🕐 Lun–Vie: 9:00–18:00 CST</div>
+      <div class="footer-badges">
+        <span class="fbadge">SSL Seguro</span>
+        <span class="fbadge">CFDI 4.0</span>
+        <span class="fbadge">LFPDPPP</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Producto</h4>
+      <ul>
+        <li><a href="#">Funcionalidades</a></li>
+        <li><a href="#">Precios y planes</a></li>
+        <li><a href="#">Actualizaciones</a></li>
+        <li><a href="#">App móvil</a></li>
+        <li><a href="#">Integraciones</a></li>
+        <li><a href="#">Estado del servicio</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Soporte</h4>
+      <ul>
+        <li><a href="#">Centro de ayuda</a></li>
+        <li><a href="#">Guías y tutoriales</a></li>
+        <li><a href="#">Webinars gratuitos</a></li>
+        <li><a href="#">API para desarrolladores</a></li>
+        <li><a href="#">Comunidad Todonto</a></li>
+        <li><a href="#">Contactar soporte</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Términos y condiciones</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Aviso de privacidad</a></li>
+        <li><a href="#">Política de cookies</a></li>
+        <li><a href="#">Acuerdo de nivel de servicio</a></li>
+        <li><a href="#">Reporte de vulnerabilidades</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Todonto, S.A. de C.V. · RFC: TOD260101ABC · Todos los derechos reservados.</span>
+    <div class="footer-legal-links">
+      <a href="#">Términos</a><span class="fdiv">|</span>
+      <a href="#">Privacidad</a><span class="fdiv">|</span>
+      <a href="#">Cookies</a><span class="fdiv">|</span>
+      <a href="#">Aviso legal</a><span class="fdiv">|</span>
+      <a href="#">Mapa del sitio</a>
+    </div>
+  </div>
+</footer>

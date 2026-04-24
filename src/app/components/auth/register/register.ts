@@ -1,14 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'; // <-- Importante para standalone
+import { AuthService } from '../../../services/auth';
+import { RegisterRequest } from '../../../interfaces/auth.interface';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './register.html',
   styleUrls: ['./register.css']
 })
+
 export class Register {
+
   // Datos del formulario
   nombre = '';
   ap_pat = '';
@@ -43,6 +49,12 @@ export class Register {
     password2: (v: string) => !v ? 'Confirma tu contraseña.' : v === this.password ? '' : 'Las contraseñas no coinciden.'
   };
 
+  // Fortaleza de contraseña
+  strengthLevel = 'weak';
+  strengthFilled = 0;
+
+  constructor(private authService: AuthService) {}
+
   validarCampo(campo: string, force = false): boolean {
     const valor = (this as any)[campo] || '';
     const error = this.rules[campo]?.(valor) || '';
@@ -65,10 +77,6 @@ export class Register {
   onBlur(campo: string) {
     this.validarCampo(campo, true);
   }
-
-  // Fortaleza de contraseña
-  strengthLevel = 'weak';
-  strengthFilled = 0;
 
   checkPasswordStrength() {
     const v = this.password;
@@ -115,6 +123,7 @@ export class Register {
     this.privacidad = !this.privacidad;
     if (this.privacidad) this.errorMessages['privacidad'] = '';
   }
+
   toggleTerminos() {
     this.terminos = !this.terminos;
     if (this.terminos) this.errorMessages['terminos'] = '';
@@ -135,17 +144,91 @@ export class Register {
     return ok;
   }
 
+  // Registrar al usuario
   handleSubmit() {
     if (!this.validarFormulario()) return;
+
     const btn = document.getElementById('btnSubmit') as HTMLButtonElement;
-    if (btn) { btn.disabled = true; btn.textContent = 'Creando cuenta...'; }
-    setTimeout(() => {
-      const toast = document.getElementById('successToast');
-      if (toast) toast.style.display = 'flex';
-      if (btn) { btn.style.background = '#3B6D11'; btn.textContent = '¡Cuenta creada!'; }
-    }, 1300);
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Creando cuenta...';
+    }
+
+    // Mapear los datos del formulario al formato que espera el backend
+    const requestData: RegisterRequest = this.mapToRegisterRequest();
+
+    this.authService.register(requestData).subscribe({
+      next: (response) => {
+        // Guardar tokens
+        this.authService.saveTokens(response.tokens.access_token, response.tokens.refresh_token);
+
+        // Enviar correo
+        this.authService.sendVerificationCode(response.user.correo_electronico);
+
+        // Mostrar toast de éxito
+        const toast = document.getElementById('successToast');
+        if (toast) toast.style.display = 'flex';
+
+        if (btn) {
+          btn.style.background = '#3B6D11';
+          btn.textContent = '¡Cuenta creada!';
+        }
+
+        // Redirigir después de 1.5 segundos
+        setTimeout(() => {
+          window.location.href = '/verificar-correo'
+        }, 1500);
+      },
+      error: (error) => {
+        // Restaurar botón
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Crear mi cuenta gratis';
+          btn.style.background = '';
+        }
+
+        // Mostrar errores devueltos por el backend
+        if (error.status === 400 && error.error?.errors) {
+
+          const errores = error.error.errors;
+          alert(errores.join('\n'));
+        } else if (error.status === 409) {
+          alert('El correo o teléfono ya está registrado.');
+        } else {
+          alert('Ocurrió un error inesperado. Revisa tu conexión o intenta más tarde.');
+        }
+      }
+    });
   }
 
+  // Convierte los campos del formulario al objeto que espera el backend
+  private mapToRegisterRequest(): RegisterRequest {
+    const nombreCompleto = `${this.nombre}`.trim();
+
+    // Concatena lada + teléfono (eliminando espacios)
+    const telefonoCompleto = `${this.lada}${this.telefono.replace(/\s/g, '')}`;
+
+    // Mapeo de sexo: 'M', 'F' o 'O'
+    let sexoMapping: 'M' | 'F' | 'O' | undefined = undefined;
+    if (this.sexo === 'M') sexoMapping = 'M';
+    if (this.sexo === 'F') sexoMapping = 'F';
+    if (this.sexo === 'O') sexoMapping = 'O';
+
+    return {
+      nombre_usuario: nombreCompleto,
+      apellido_paterno: this.ap_pat || undefined,
+      apellido_materno: this.ap_mat || undefined,
+      correo_electronico: this.correo,
+      numero_telefono: telefonoCompleto,
+      fecha_nacimiento: this.fecha_nac || undefined,
+      sexo_usuario: sexoMapping,
+      contrasena: this.password,
+      acepta_aviso_privacidad: this.privacidad,
+      acepta_terminos_condiciones: this.terminos
+    };
+  }
+
+  // Mantén el método handleGoogle igual
   handleGoogle() {
     alert('Redirigiendo a Google OAuth...');
   }
