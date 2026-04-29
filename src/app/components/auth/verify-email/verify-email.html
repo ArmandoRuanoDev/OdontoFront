@@ -1,6 +1,6 @@
-<!-- NAV -->
+<!-- Nav -->
 <nav>
-  <a href="#" class="nav-logo">
+  <a href="/" class="nav-logo">
     <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="34" height="34" rx="10" fill="#185FA5"/>
       <path d="M17 7C17 7 10 10.5 10 17.5C10 21.9 13.1 25.5 17 25.5C20.9 25.5 24 21.9 24 17.5C24 10.5 17 7 17 7Z" fill="white" opacity="0.9"/>
@@ -9,33 +9,41 @@
     Todonto
   </a>
   <ul class="nav-links">
-    <li><a href="#">Funciones</a></li>
     <li><a href="#">¿Cómo funciona?</a></li>
     <li><a href="#">Testimonios</a></li>
     <li><a href="#">Contacto</a></li>
-    <li><a href="#" class="nav-cta">Iniciar sesión</a></li>
+    <li><a href="/iniciar-sesion" class="nav-cta">Iniciar sesión</a></li>
   </ul>
 </nav>
 
-<div class="main-layout" style="flex:1;">
+<!-- Main -->
+<div class="main-layout">
 
-  <!-- LEFT PANEL -->
+  <!-- Panel izquierdo -->
   <div class="left-panel">
     <div class="panel-content">
-      <div class="panel-badge"><span></span> Seguridad en cada paso</div>
-      <h2>Tu cuenta está<br>a un paso de <em>estar lista</em></h2>
+      <div class="panel-badge">
+        <span class="badge-dot"></span>
+        Seguridad en cada paso
+      </div>
+      <h2>Tu cuenta está a un paso de <em>estar lista</em></h2>
       <p>Verificamos tu correo para garantizar la seguridad de tu consultorio y la privacidad de tus pacientes.</p>
 
+      <!-- Progress Steps -->
       <div class="steps-visual">
+
         <div class="step-item done-step">
           <div class="step-circle done">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 7l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
           <div class="step-body">
             <strong>Datos de registro</strong>
             <span>Información completada correctamente</span>
           </div>
         </div>
+
         <div class="step-item active-step">
           <div class="step-circle active">2</div>
           <div class="step-body">
@@ -43,15 +51,18 @@
             <span>Ingresa el código de 6 dígitos que enviamos</span>
           </div>
         </div>
+
         <div class="step-item pending-step">
           <div class="step-circle pending">3</div>
           <div class="step-body">
-            <strong>Configurar consultorio</strong>
-            <span>Personaliza tu perfil y empieza a usar Todonto</span>
+            <strong>Seleccionar plan</strong>
+            <span>Elige el plan que mejor se ajuste a tus necesidades</span>
           </div>
         </div>
+
       </div>
 
+      <!-- Security Badges -->
       <div class="security-row">
         <div class="sec-badge">🔒 Cifrado AES-256</div>
         <div class="sec-badge">✉️ Código expira en 10 min</div>
@@ -59,6 +70,7 @@
       </div>
     </div>
 
+    <!-- Testimonial 
     <div class="panel-quote">
       <p>"El proceso de registro fue muy sencillo. En menos de 5 minutos ya tenía mi consultorio configurado."</p>
       <div class="panel-quote-author">
@@ -69,14 +81,16 @@
         </div>
       </div>
     </div>
+    -->
   </div>
 
-  <!-- RIGHT PANEL -->
+  <!-- Panel derecho -->
   <div class="right-panel">
     <div class="form-box">
 
-      <!-- Formulario de verificación (oculto si ya se verificó) -->
-      <div *ngIf="!successMessage">
+      <!-- Formulario de verificación -->
+      <div *ngIf="!showSuccess" id="verifyForm">
+
         <div class="form-header">
           <div class="email-icon-wrap">
             <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -84,94 +98,173 @@
               <path d="M3 10l13 9 13-9" stroke="#185FA5" stroke-width="1.8" stroke-linecap="round"/>
             </svg>
             <div class="notif-dot">
-              <svg viewBox="0 0 9 9" fill="none"><path d="M2 4.5l2 2 3-3" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <svg viewBox="0 0 9 9" fill="none">
+                <path d="M2 4.5l2 2 3-3" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
           </div>
           <h1>Verifica tu correo</h1>
-          <p>Enviamos un código de 6 dígitos a<br><strong>{{ email }}</strong><br>Revisa también tu carpeta de spam.</p>
+          <p>
+            Enviamos un código de 6 dígitos a<br>
+            <strong>{{ emailMasked }}</strong><br>
+            Revisa también tu carpeta de spam.
+          </p>
         </div>
 
-        <div class="otp-label">Ingresa el código de verificación <span style="color:#E24B4A">*</span></div>
-        <div class="otp-wrap" (paste)="onPaste($event)">
-          <input *ngFor="let digit of otpDigits; let i = index"
-                 #otpInput
-                 type="text"
-                 maxlength="1"
-                 inputmode="numeric"
-                 pattern="[0-9]"
-                 [(ngModel)]="otpDigits[i]"
-                 (input)="onOtpInput(i, $event)"
-                 (keydown)="onOtpKeydown(i, $event)"
-                 class="otp-input"
-                 [class.filled]="digit"
-                 [class.error]="errorMessage && !digit"
-                 [class.success]="successMessage && digit">
-          <div class="otp-sep" *ngIf="false">—</div>
+        <!-- Label OTP -->
+        <div class="otp-label">
+          Ingresa el código de verificación
+          <span class="req">*</span>
         </div>
 
-        <div class="field-msg" [class.error]="errorMessage" [class.info]="!errorMessage && !successMessage" [class.success]="successMessage">
-          <ng-container *ngIf="errorMessage">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/><path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
-            {{ errorMessage }}
-          </ng-container>
-          <ng-container *ngIf="!errorMessage && !successMessage">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#94a3b8" stroke-width="1.3"/><path d="M6 5.5v3M6 4h.01" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <!-- Inputs OTP -->
+        <div class="otp-wrap">
+          <input
+            *ngFor="let digit of digits; let i = index"
+            [id]="'otp-' + i"
+            [class]="getInputClass(i)"
+            [value]="digits[i]"
+            maxlength="1"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            [attr.autocomplete]="i === 0 ? 'one-time-code' : null"
+            (keydown)="onDigitKeydown($event, i)"
+            (paste)="onDigitPaste($event, i)"
+            (focus)="$event.target.select()"
+          />
+        </div>
+
+        <!-- Mensaje de estado OTP -->
+        <div
+          class="field-msg"
+          [class.error]="otpState === 'error'"
+          [class.success]="otpState === 'success'"
+          [class.info]="otpState === 'idle'"
+        >
+          <!-- Idle: info -->
+          <ng-container *ngIf="otpState === 'idle' && !isResending">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="5" stroke="#94a3b8" stroke-width="1.3"/>
+              <path d="M6 5.5v3M6 4h.01" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
             El código tiene una validez de 10 minutos
           </ng-container>
-          <ng-container *ngIf="successMessage && !errorMessage">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#3B6D11" stroke-width="1.3"/><path d="M3.5 6l2 2 3-3" stroke="#3B6D11" stroke-width="1.3" stroke-linecap="round"/></svg>
-            {{ successMessage }}
+
+          <!-- Reenviando -->
+          <ng-container *ngIf="isResending">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="5" stroke="#94a3b8" stroke-width="1.3"/>
+              <path d="M6 5.5v3M6 4h.01" stroke="#94a3b8" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            Enviando nuevo código...
+          </ng-container>
+
+          <!-- Error -->
+          <ng-container *ngIf="otpState === 'error'">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/>
+              <path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            {{ otpErrorMsg }}
+          </ng-container>
+
+          <!-- Éxito inline (antes de mostrar pantalla completa) -->
+          <ng-container *ngIf="otpState === 'success'">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="5" stroke="#3B6D11" stroke-width="1.3"/>
+              <path d="M3.5 6l2 2 3-3" stroke="#3B6D11" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            ¡Código correcto! Redirigiendo...
           </ng-container>
         </div>
 
         <!-- Timer -->
         <div class="timer-row">
-          <div class="timer-bar-bg"><div class="timer-bar" [style.width.%]="getTimerPercentage()"></div></div>
-          <div class="timer-text">Código válido por <strong>{{ getFormattedTime() }}</strong></div>
+          <div class="timer-bar-bg">
+            <div
+              class="timer-bar"
+              [style.width.%]="timerPercent"
+              [class.timer-bar-warning]="secondsLeft <= 60 && secondsLeft > 0"
+              [class.timer-bar-expired]="timerExpired"
+            ></div>
+          </div>
+          <div class="timer-text">
+            <ng-container *ngIf="!timerExpired">
+              Código válido por <strong>{{ timerDisplay }}</strong>
+            </ng-container>
+            <ng-container *ngIf="timerExpired">
+              <span class="timer-expired-label">El código ha expirado</span>
+            </ng-container>
+          </div>
         </div>
 
-        <button class="btn-verify" (click)="verifyCode()" [disabled]="isLoading || codeExpired">
-          {{ isLoading ? 'Verificando...' : 'Verificar correo' }}
+        <!-- Botón verificar -->
+        <button
+          class="btn-verify"
+          [disabled]="!codeComplete || isVerifying || timerExpired"
+          (click)="handleVerify()"
+        >
+          <ng-container *ngIf="!isVerifying">Verificar correo</ng-container>
+          <ng-container *ngIf="isVerifying">
+            <span class="spinner"></span>
+            Verificando...
+          </ng-container>
         </button>
 
-        <button class="btn-resend" (click)="resendCode()" [disabled]="!canResend || isLoading">
-          Reenviar código
+        <!-- Botón reenviar -->
+        <button
+          class="btn-resend"
+          [disabled]="!resendEnabled || isResending"
+          (click)="handleResend()"
+        >
+          <ng-container *ngIf="!isResending">
+            <ng-container *ngIf="resendEnabled">Reenviar código</ng-container>
+            <ng-container *ngIf="!resendEnabled">
+              Reenviar disponible en {{ timerDisplay }}
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="isResending">Enviando...</ng-container>
         </button>
 
         <div class="sep"></div>
+
         <div class="back-row">
-          <a routerLink="/registro">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <a (click)="goBack()" style="cursor:pointer;">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             Volver y cambiar correo
           </a>
         </div>
       </div>
 
-      <!-- Estado de éxito (se muestra cuando successMessage tiene valor) -->
-      <div *ngIf="successMessage" class="success-state" style="display:block">
+      <!-- Estado de éxito -->
+      <div *ngIf="showSuccess" class="success-state">
         <div class="success-circle">
-          <svg width="34" height="34" viewBox="0 0 34 34" fill="none"><path d="M8 17l6 6 12-12" stroke="#3B6D11" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+            <path d="M8 17l6 6 12-12" stroke="#3B6D11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
         <h2>¡Correo verificado!</h2>
-        <p>Tu cuenta ha sido confirmada exitosamente.<br>Ya puedes acceder a tu panel de Todonto.</p>
-        <button class="btn-dashboard" (click)="redirectToPlan()">
-          Ir a mi panel
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
-        </button>
+        <p>
+          Tu cuenta ha sido confirmada exitosamente.<br>
+          Serás redirigido para elegir tu plan.
+        </p>
       </div>
 
     </div>
   </div>
+
 </div>
 
-<!-- FOOTER -->
+<!-- Footer -->
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
       <h3>🦷 Todonto</h3>
       <p>La plataforma de gestión dental más completa de México. Diseñada por y para odontólogos.</p>
-      <div class="footer-contact-item">📍 Av. Insurgentes Sur 1457, CDMX, C.P. 03920</div>
-      <div class="footer-contact-item">📞 +52 (55) 1234-5678</div>
+      <div class="footer-contact-item">📍 Calle San Luis 13, San Luis de la Paz, México, C.P. 37900</div>
+      <div class="footer-contact-item">📞 +52 (468) 138-6739</div>
       <div class="footer-contact-item">✉️ contacto@todonto.mx</div>
       <div class="footer-contact-item">🕐 Lun–Vie: 9:00–18:00 CST</div>
       <div class="footer-badges">
@@ -185,9 +278,6 @@
       <ul>
         <li><a href="#">Funcionalidades</a></li>
         <li><a href="#">Precios y planes</a></li>
-        <li><a href="#">Actualizaciones</a></li>
-        <li><a href="#">App móvil</a></li>
-        <li><a href="#">Integraciones</a></li>
         <li><a href="#">Estado del servicio</a></li>
       </ul>
     </div>
@@ -195,9 +285,6 @@
       <h4>Soporte</h4>
       <ul>
         <li><a href="#">Centro de ayuda</a></li>
-        <li><a href="#">Guías y tutoriales</a></li>
-        <li><a href="#">Webinars gratuitos</a></li>
-        <li><a href="#">API para desarrolladores</a></li>
         <li><a href="#">Comunidad Todonto</a></li>
         <li><a href="#">Contactar soporte</a></li>
       </ul>

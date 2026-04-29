@@ -18,11 +18,7 @@ export interface RegisterResponse {
     nombre_usuario: string;
     correo_electronico: string;
   };
-  tokens: {
-    access_token: string;
-    refresh_token: string;
-    expires_in: string;
-  };
+  next_step: string;
 }
 
 export interface SendVerificationRequest {
@@ -44,7 +40,6 @@ export interface VerifyEmailResponse {
   };
   tokens?: {
     access_token: string;
-    refresh_token: string;
     expires_in: string;
   };
 }

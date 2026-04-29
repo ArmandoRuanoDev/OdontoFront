@@ -1,80 +1,103 @@
-// src/app/services/auth.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RegisterRequest, RegisterResponse, VerifyEmailResponse } from '../interfaces/auth.interface';
 
 @Injectable({ providedIn: 'root' })
+
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api/auth';
+  private accessToken: string | null = null; // Se almacena el access token en memoria
 
   constructor(private http: HttpClient) {}
 
-  // Registrar usuario (envía la petición con credenciales)
+  // Registro
   register(data: RegisterRequest): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, data, {
-      withCredentials: true // Importante para enviar/recibir cookies
-    });
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, data);
   }
 
+  // Enviar código de verificación
   sendVerificationCode(email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/send-verification-code`, { correo: email });
   }
 
-  // Verificar el código y activar la cuenta
+  // Verificar email
   verifyEmail(email: string, code: string): Observable<VerifyEmailResponse> {
-    return this.http.post<VerifyEmailResponse>(`${this.apiUrl}/verify-email`, { correo: email, codigo: code });
+    return this.http.post<VerifyEmailResponse>(
+      `${this.apiUrl}/verify-email`,
+      { correo: email, codigo: code },
+      { withCredentials: true }
+    );
   }
 
-  // Guardar tokens en cookies (accesible desde JS, sin HttpOnly)
-  saveTokens(accessToken: string, refreshToken: string): void {
-    // Calcular expiración (ejemplo: 7 días para refresh, 1 hora para access)
-    const accessExpires = new Date();
-    accessExpires.setTime(accessExpires.getTime() + 60 * 60 * 1000); // 1 hora
-    const refreshExpires = new Date();
-    refreshExpires.setTime(refreshExpires.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 días
-
-    this.setCookie('access_token', accessToken, accessExpires);
-    this.setCookie('refresh_token', refreshToken, refreshExpires);
+  // Login
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/login`,
+      { correo: email, contrasena: password },
+      { withCredentials: true }
+    );
   }
 
-  // Obtener un token desde la cookie
+  // Refrescar token
+  refreshAccessToken(): Observable<{ access_token: string; expires_in: string }> {
+    return this.http.post<{ access_token: string; expires_in: string }>(
+      `${this.apiUrl}/refresh-token`,
+      null,
+      { withCredentials: true } // Envía automáticamente la cookie HttpOnly
+    );
+  }
+
+  // Guardar / obtener los access token
+  saveAccessToken(token: string): void {
+    this.accessToken = token;
+    sessionStorage.setItem('access_token', token);
+  }
+
   getAccessToken(): string | null {
-    return this.getCookie('access_token');
-  }
-
-  getRefreshToken(): string | null {
-    return this.getCookie('refresh_token');
-  }
-
-  // Eliminar cookies (logout)
-  clearTokens(): void {
-    this.deleteCookie('access_token');
-    this.deleteCookie('refresh_token');
-  }
-
-  // Redirigir después del registro
-  redirectToDashboard(): void {
-    window.location.href = '/';
-  }
-
-  // --- Utilidades para cookies ---
-  private setCookie(name: string, value: string, expires: Date): void {
-    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
-  }
-
-  private getCookie(name: string): string | null {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    if (!this.accessToken) {
+        this.accessToken = sessionStorage.getItem('access_token');
     }
-    return null;
+    return this.accessToken;
   }
 
-  private deleteCookie(name: string): void {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax`;
+  // Cerrar sesión
+  clearSession(): void {
+    this.accessToken = null;
+    sessionStorage.removeItem('access_token');
   }
+
+  // Verificar si está autenticado
+  isAuthenticated(): boolean {
+    return this.accessToken !== null;
+  }
+
+  /**
+   * Envía un código de 6 dígitos al correo registrado.
+   * Endpoint: POST /api/auth/send-password-reset-code
+   */
+  sendPasswordResetCode(correo: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/send-password-reset-code`, { correo });
+  }
+
+  /**
+   * Verifica el código de 6 dígitos.
+   * Endpoint: POST /api/auth/verify-password-code
+   * Retorna { message, reset_token, expires_in }
+   */
+  verifyPasswordResetCode(correo: string, codigo: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/verify-password-code`, { correo, codigo });
+  }
+
+  /**
+   * Cambia la contraseña usando el reset_token obtenido en la verificación.
+   * Endpoint: POST /api/auth/reset-password
+   */
+  resetPassword(resetToken: string, nuevaContrasena: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password`, {
+      reset_token: resetToken,
+      nueva_contrasena: nuevaContrasena
+    });
+  }
+
 }

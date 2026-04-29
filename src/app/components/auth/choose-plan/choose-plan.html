@@ -1,0 +1,422 @@
+<!-- Nav -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="34" height="34" rx="10" fill="#185FA5"/>
+      <path d="M17 7C17 7 10 10.5 10 17.5C10 21.9 13.1 25.5 17 25.5C20.9 25.5 24 21.9 24 17.5C24 10.5 17 7 17 7Z" fill="white" opacity="0.9"/>
+      <path d="M14 19L16.5 21.5L20.5 16" stroke="#185FA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Todonto
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">¿Cómo funciona?</a></li>
+    <li><a href="#">Testimonios</a></li>
+    <li><a href="#">Contacto</a></li>
+    <li><a href="/iniciar-sesion" class="nav-cta">Iniciar sesión</a></li>
+  </ul>
+</nav>
+
+<!-- Main -->
+<main class="pricing-main">
+
+  <!-- Header -->
+  <div class="pricing-header">
+    <div class="pricing-badge">
+      <span class="badge-dot"></span>
+      Sin contratos, cancela cuando quieras
+    </div>
+    <h1>Elige el plan <em>ideal</em> para tu consultorio</h1>
+    <p>Empieza gratis, prueba sin compromiso o activa el plan completo. Tú decides.</p>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loadingPlanes" class="loading-wrap">
+    <div class="loading-spinner"></div>
+    <span>Cargando planes...</span>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorPlanes" class="error-banner">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <circle cx="8" cy="8" r="7" stroke="#A32D2D" stroke-width="1.4"/>
+      <path d="M8 5v4M8 11h.01" stroke="#A32D2D" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+    {{ errorPlanes }}
+    <button class="btn-retry" (click)="cargarPlanes()">Reintentar</button>
+  </div>
+
+  <!-- Grid de planes -->
+  <div *ngIf="!loadingPlanes && !errorPlanes" class="plans-grid">
+
+    <!-- Plan Inicio -->
+    <div *ngIf="planInicio" class="plan-card">
+      <div class="plan-badge free">{{ getBadgeTexto(planInicio) }}</div>
+      <div class="plan-icon">🦷</div>
+      <h3 class="plan-name">{{ planInicio.nombre }}</h3>
+      <p class="plan-desc">{{ planInicio.descripcion }}</p>
+
+      <div class="plan-price">
+        <span class="price-amount">Gratis</span>
+        <span class="price-period">para siempre</span>
+      </div>
+
+      <ul class="plan-features">
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Hasta <strong>{{ planInicio.max_pacientes }}</strong> pacientes
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Hasta <strong>{{ planInicio.max_citas_mes }}</strong> citas al mes
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Hasta <strong>{{ planInicio.max_recetas_mes }}</strong> recetas al mes
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Expedientes básicos
+        </li>
+        <li class="feat-item limited">
+          <svg class="feat-check no" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#f1f5f9"/><path d="M5 5l4 4M9 5l-4 4" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Sin facturación CFDI
+        </li>
+        <li class="feat-item limited">
+          <svg class="feat-check no" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#f1f5f9"/><path d="M5 5l4 4M9 5l-4 4" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Sin reportes avanzados
+        </li>
+      </ul>
+
+      <button class="btn-plan free-btn" (click)="seleccionarPlan(planInicio)">
+        Empezar gratis
+      </button>
+      <p class="plan-note">Sin tarjeta requerida</p>
+    </div>
+
+    <!-- Plan prueba -->
+    <div *ngIf="planPrueba" class="plan-card trial-card">
+      <div class="plan-badge trial">{{ getBadgeTexto(planPrueba) }}</div>
+      <div class="plan-icon">⚡</div>
+      <h3 class="plan-name">{{ planPrueba.nombre }}</h3>
+      <p class="plan-desc">{{ planPrueba.descripcion }}</p>
+
+      <div class="plan-price">
+        <span class="price-amount">$0</span>
+        <span class="price-period">por 14 días</span>
+      </div>
+
+      <ul class="plan-features">
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Pacientes <strong>ilimitados</strong>
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Citas <strong>ilimitadas</strong>
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Expedientes <strong>ilimitados</strong>
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Recetas <strong>ilimitadas</strong>
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Todas las funciones Pro
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#EAF3DE"/><path d="M4 7l2 2 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Facturación CFDI 4.0
+        </li>
+      </ul>
+
+      <button class="btn-plan trial-btn" (click)="seleccionarPlan(planPrueba)">
+        Probar 14 días gratis
+      </button>
+      <p class="plan-note">Se convierte en Profesional al finalizar</p>
+    </div>
+
+    <!-- Plan profesional -->
+    <div *ngIf="planMensual" class="plan-card popular-card">
+      <div class="popular-glow"></div>
+      <div class="plan-badge popular">{{ getBadgeTexto(planMensual) }}</div>
+      <div class="plan-icon">🚀</div>
+      <h3 class="plan-name">{{ planMensual.nombre }}</h3>
+      <p class="plan-desc">{{ planMensual.descripcion }}</p>
+
+      <div class="plan-price">
+        <span class="price-amount">{{ formatearPrecio(planMensual.precio, planMensual.moneda) }}</span>
+        <span class="price-period">/ mes</span>
+      </div>
+
+      <ul class="plan-features">
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#dbeafe"/><path d="M4 7l2 2 4-4" stroke="#185FA5" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Pacientes <strong>ilimitados</strong>
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#dbeafe"/><path d="M4 7l2 2 4-4" stroke="#185FA5" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Citas <strong>ilimitadas</strong>
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#dbeafe"/><path d="M4 7l2 2 4-4" stroke="#185FA5" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Expedientes <strong>ilimitados</strong>
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#dbeafe"/><path d="M4 7l2 2 4-4" stroke="#185FA5" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Recetas <strong>ilimitadas</strong>
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#dbeafe"/><path d="M4 7l2 2 4-4" stroke="#185FA5" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Facturación CFDI 4.0
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#dbeafe"/><path d="M4 7l2 2 4-4" stroke="#185FA5" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Reportes y analíticas
+        </li>
+      </ul>
+
+      <button class="btn-plan pro-btn" (click)="seleccionarPlan(planMensual)">
+        Activar plan Profesional
+      </button>
+      <p class="plan-note">Cancela cuando quieras</p>
+    </div>
+
+    <!-- Plan anual -->
+    <div *ngIf="planAnual" class="plan-card annual-card">
+      <div class="plan-badge annual">{{ getBadgeTexto(planAnual) }}</div>
+      <div class="plan-icon">💎</div>
+      <h3 class="plan-name">{{ planAnual.nombre }}</h3>
+      <p class="plan-desc">{{ planAnual.descripcion }}</p>
+
+      <div class="plan-price">
+        <div class="annual-price-row">
+          <span class="price-amount-small">{{ formatearPrecio(planAnual.precio, planAnual.moneda) }}</span>
+          <span class="price-period">/ año</span>
+        </div>
+        <div class="price-monthly-equiv">
+          Equivale a <strong>{{ getPrecioMensualAnual(planAnual) }}/mes</strong>
+        </div>
+        <div class="annual-saving-badge">Ahorras $1,200 vs mensual</div>
+      </div>
+
+      <ul class="plan-features">
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#ede9fe"/><path d="M4 7l2 2 4-4" stroke="#6d28d9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Todo lo del plan Profesional
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#ede9fe"/><path d="M4 7l2 2 4-4" stroke="#6d28d9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Pago único anual
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#ede9fe"/><path d="M4 7l2 2 4-4" stroke="#6d28d9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Soporte prioritario
+        </li>
+        <li class="feat-item">
+          <svg class="feat-check ok" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="#ede9fe"/><path d="M4 7l2 2 4-4" stroke="#6d28d9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Acceso anticipado a nuevas funciones
+        </li>
+        <li class="feat-item annual-note-feat">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#854F0B" stroke-width="1.2"/><path d="M6.5 4v3.5M6.5 9h.01" stroke="#854F0B" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Se cobra el total al activar
+        </li>
+      </ul>
+
+      <button class="btn-plan annual-btn" (click)="seleccionarPlan(planAnual)">
+        Activar plan Anual
+      </button>
+      <p class="plan-note">Cobro anual de {{ formatearPrecio(planAnual.precio, planAnual.moneda) }}</p>
+    </div>
+
+  </div>
+
+  <!-- Garantía -->
+  <div *ngIf="!loadingPlanes" class="trust-row">
+    <div class="trust-item"><span>🔒</span> Pago seguro con Stripe</div>
+    <div class="trust-item"><span>🛡️</span> Datos cifrados AES-256</div>
+    <div class="trust-item"><span>↩️</span> Cancela cuando quieras</div>
+    <div class="trust-item"><span>🇲🇽</span> Precios en MXN</div>
+  </div>
+
+</main>
+
+<!-- Modal de pago -->
+<div *ngIf="showPaymentModal" class="modal-overlay" (click)="cerrarModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+
+    <!-- Botón cerrar -->
+    <button class="modal-close" (click)="cerrarModal()" [disabled]="procesandoPago">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <!-- Estado: Éxito -->
+    <div *ngIf="pagoExito" class="modal-success">
+      <div class="success-circle-modal">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <path d="M8 18l7 7 13-13" stroke="#3B6D11" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>¡Plan activado!</h2>
+      <p>
+        Tu plan <strong>{{ planSeleccionado?.nombre }}</strong> ha sido activado exitosamente.
+        <ng-container *ngIf="planSeleccionado?.es_prueba">
+          No se realizará ningún cobro durante los 14 días.
+        </ng-container>
+        Redirigiendo a tu panel...
+      </p>
+    </div>
+
+    <!-- Formulario de pago -->
+    <ng-container *ngIf="!pagoExito">
+
+      <div class="modal-header">
+        <div class="modal-icon-wrap">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="6" width="24" height="16" rx="3" stroke="#185FA5" stroke-width="1.6"/>
+            <path d="M2 11h24" stroke="#185FA5" stroke-width="1.6"/>
+            <rect x="5" y="15" width="5" height="2" rx="1" fill="#185FA5"/>
+          </svg>
+        </div>
+        <h2>Información de pago</h2>
+        <p>{{ getDescripcionModal(planSeleccionado!) }}</p>
+      </div>
+
+      <!-- Resumen del plan -->
+      <div class="plan-summary">
+        <div class="plan-summary-info">
+          <span class="ps-name">{{ getNombreModal(planSeleccionado!) }}</span>
+          <span class="ps-desc" *ngIf="planSeleccionado?.es_prueba">14 días gratis, luego $399mxn/mes</span>
+          <span class="ps-desc" *ngIf="!planSeleccionado?.es_prueba && planSeleccionado?.duracion_dias === 30">Cobro mensual recurrente</span>
+          <span class="ps-desc" *ngIf="planSeleccionado?.duracion_dias === 365">Cobro anual</span>
+        </div>
+        <div class="ps-price">
+          <ng-container *ngIf="planSeleccionado?.es_prueba">
+            <span class="ps-amount free">$0 hoy</span>
+          </ng-container>
+          <ng-container *ngIf="!planSeleccionado?.es_prueba">
+            <span class="ps-amount">{{ formatearPrecio(planSeleccionado!.precio, planSeleccionado!.moneda) }}</span>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Label tarjeta -->
+      <div class="card-label">
+        Datos de tarjeta
+        <span class="req">*</span>
+      </div>
+
+      <!-- Stripe Card Element -->
+      <div class="stripe-element-wrap" [class.stripe-error]="cardError">
+        <div id="stripe-card-element"></div>
+      </div>
+
+      <!-- Error de tarjeta -->
+      <div *ngIf="cardError" class="field-msg error">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/>
+          <path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        {{ cardError }}
+      </div>
+
+      <!-- Error del backend -->
+      <div *ngIf="pagoError" class="backend-error">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="7" r="6" stroke="#A32D2D" stroke-width="1.3"/>
+          <path d="M7 4.5v3.5M7 10h.01" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        {{ pagoError }}
+      </div>
+
+      <!-- Seguridad -->
+      <div class="stripe-security">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M6 1L1.5 3v3.5C1.5 9.2 3.5 11.2 6 12c2.5-.8 4.5-2.8 4.5-5.5V3L6 1z" stroke="#94a3b8" stroke-width="1.2"/>
+        </svg>
+        Pago seguro procesado por <strong>Stripe</strong>. Tus datos no son almacenados en nuestros servidores.
+      </div>
+
+      <!-- Botón confirmar -->
+      <button
+        class="btn-confirm"
+        [disabled]="!cardComplete || procesandoPago"
+        (click)="procesarPago()"
+      >
+        <span *ngIf="procesandoPago" class="spinner"></span>
+        <ng-container *ngIf="!procesandoPago">
+          <ng-container *ngIf="planSeleccionado?.es_prueba">Activar prueba gratuita</ng-container>
+          <ng-container *ngIf="!planSeleccionado?.es_prueba">
+            Pagar {{ formatearPrecio(planSeleccionado!.precio, planSeleccionado!.moneda) }}
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="procesandoPago">Procesando...</ng-container>
+      </button>
+
+      <button class="btn-cancel-modal" (click)="cerrarModal()" [disabled]="procesandoPago">
+        Cancelar
+      </button>
+
+    </ng-container>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>🦷 Todonto</h3>
+      <p>La plataforma de gestión dental más completa de México. Diseñada por y para odontólogos.</p>
+      <div class="footer-contact-item">📍 Calle San Luis 13, San Luis de la Paz, México, C.P. 37900</div>
+      <div class="footer-contact-item">📞 +52 (468) 138-6739</div>
+      <div class="footer-contact-item">✉️ contacto@todonto.mx</div>
+      <div class="footer-contact-item">🕐 Lun–Vie: 9:00–18:00 CST</div>
+      <div class="footer-badges">
+        <span class="fbadge">SSL Seguro</span>
+        <span class="fbadge">CFDI 4.0</span>
+        <span class="fbadge">LFPDPPP</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Producto</h4>
+      <ul>
+        <li><a href="#">Funcionalidades</a></li>
+        <li><a href="#">Precios y planes</a></li>
+        <li><a href="#">Estado del servicio</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Soporte</h4>
+      <ul>
+        <li><a href="#">Centro de ayuda</a></li>
+        <li><a href="#">Comunidad Todonto</a></li>
+        <li><a href="#">Contactar soporte</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Términos y condiciones</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Aviso de privacidad</a></li>
+        <li><a href="#">Política de cookies</a></li>
+        <li><a href="#">Acuerdo de nivel de servicio</a></li>
+        <li><a href="#">Reporte de vulnerabilidades</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Todonto, S.A. de C.V. · RFC: TOD260101ABC · Todos los derechos reservados.</span>
+    <div class="footer-legal-links">
+      <a href="#">Términos</a><span class="fdiv">|</span>
+      <a href="#">Privacidad</a><span class="fdiv">|</span>
+      <a href="#">Cookies</a><span class="fdiv">|</span>
+      <a href="#">Aviso legal</a><span class="fdiv">|</span>
+      <a href="#">Mapa del sitio</a>
+    </div>
+  </div>
+</footer>

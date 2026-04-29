@@ -1,0 +1,176 @@
+<!-- Nav -->
+<nav>
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="34" height="34" rx="10" fill="#185FA5"/>
+      <path d="M17 7C17 7 10 10.5 10 17.5C10 21.9 13.1 25.5 17 25.5C20.9 25.5 24 21.9 24 17.5C24 10.5 17 7 17 7Z" fill="white" opacity="0.9"/>
+      <path d="M14 19L16.5 21.5L20.5 16" stroke="#185FA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Todonto
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">¿Cómo funciona?</a></li>
+    <li><a href="#">Testimonios</a></li>
+    <li><a href="#">Contacto</a></li>
+  </ul>
+</nav>
+
+<main class="config-layout">
+  <!-- Encabezado -->
+  <div class="config-header">
+    <div class="ch-badge">
+      <span class="badge-dot"></span>
+      Paso final
+    </div>
+    <h1>Configura tu <em>consultorio</em></h1>
+    <p>Estos datos se usarán para personalizar tu panel, agendar citas y mostrar información a tus pacientes.</p>
+  </div>
+
+  <!-- Formulario -->
+  <div class="config-card">
+    <!-- Sección 1: Logo del consultorio -->
+    <div class="config-section">
+      <div class="section-head">
+        <div class="section-icon">🦷</div>
+        <div>
+          <h3>Logo del consultorio</h3>
+          <p>Sube una imagen para identificar tu consultorio (opcional). Se mostrará en el panel y en algunos reportes.</p>
+        </div>
+      </div>
+      <div class="logo-upload-area" (click)="triggerFileInput()">
+        <input type="file" hidden #fileInput accept="image/*" (change)="onFileSelected($event)">
+        <div *ngIf="!logoPreview" class="upload-placeholder">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 8v16M8 16h16" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+            <rect x="2" y="2" width="28" height="28" rx="6" stroke="#cbd5e1" stroke-width="1.5"/>
+          </svg>
+          <span>Arrastra o haz clic para subir logo</span>
+          <small>PNG, JPG o SVG. Máx. 2 MB</small>
+        </div>
+        <div *ngIf="logoPreview" class="preview-wrap">
+          <img [src]="logoPreview" alt="Vista previa del logo">
+          <div class="preview-overlay" (click)="$event.stopPropagation(); eliminarLogo()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección 2: Horario y días de trabajo -->
+    <div class="config-section">
+      <div class="section-head">
+        <div class="section-icon">⏰</div>
+        <div>
+          <h3>Horario de atención</h3>
+          <p>Define los días y horas en los que trabajas para que las citas solo se agenden en esos periodos.</p>
+        </div>
+      </div>
+
+      <div class="days-grid">
+        <div *ngFor="let dia of diasSemana" class="day-card" [class.active]="dia.activo" (click)="toggleDia(dia)">
+          <span class="day-name">{{ dia.nombre }}</span>
+          <span class="day-state">{{ dia.activo ? 'Laboral' : 'Descanso' }}</span>
+        </div>
+      </div>
+
+      <div class="time-row">
+        <div class="time-field">
+          <label>Hora de apertura</label>
+          <input type="time" [(ngModel)]="horaApertura">
+        </div>
+        <div class="time-divider">a</div>
+        <div class="time-field">
+          <label>Hora de cierre</label>
+          <input type="time" [(ngModel)]="horaCierre">
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección 3: Tratamientos (opcional) -->
+    <div class="config-section">
+      <div class="section-head">
+        <div class="section-icon">📋</div>
+        <div>
+          <h3>Tratamientos <span class="optional-tag">Opcional</span></h3>
+          <p>Agrega los tratamientos que realizas para que aparezcan en tu panel y puedas asignarlos a las citas.</p>
+        </div>
+      </div>
+
+      <div class="treatments-list">
+        <div *ngFor="let t of tratamientos; let i = index" class="treatment-item">
+          <span class="treat-name">{{ t.nombre }}</span>
+          <span class="treat-time">{{ t.duracion }} min</span>
+          <button class="treat-remove" (click)="eliminarTratamiento(i)">×</button>
+        </div>
+      </div>
+
+      <div class="add-treatment-row">
+        <input type="text" placeholder="Nombre del tratamiento (ej. Limpieza dental)" [(ngModel)]="nuevoTratamiento" (keyup.enter)="agregarTratamiento()">
+        <input type="number" placeholder="Duración (min)" [(ngModel)]="nuevaDuracion" (keyup.enter)="agregarTratamiento()">
+        <button class="btn-add-treat" (click)="agregarTratamiento()">Agregar</button>
+      </div>
+    </div>
+
+    <!-- Acciones finales -->
+    <div class="config-actions">
+      <button class="btn-skip" (click)="irAlPanel()">Omitir configuración</button>
+      <button class="btn-save" (click)="guardarEIr()">Guardar e ir al panel</button>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>🦷 Todonto</h3>
+      <p>La plataforma de gestión dental más completa de México. Diseñada por y para odontólogos.</p>
+      <div class="footer-contact-item">📍 Calle San Luis 13, San Luis de la Paz, México, C.P. 37900</div>
+      <div class="footer-contact-item">📞 +52 (468) 138-6739</div>
+      <div class="footer-contact-item">✉️ contacto@todonto.mx</div>
+      <div class="footer-contact-item">🕐 Lun–Vie: 9:00–18:00 CST</div>
+      <div class="footer-badges">
+        <span class="fbadge">SSL Seguro</span>
+        <span class="fbadge">CFDI 4.0</span>
+        <span class="fbadge">LFPDPPP</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Producto</h4>
+      <ul>
+        <li><a href="#">Funcionalidades</a></li>
+        <li><a href="#">Precios y planes</a></li>
+        <li><a href="#">Estado del servicio</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Soporte</h4>
+      <ul>
+        <li><a href="#">Centro de ayuda</a></li>
+        <li><a href="#">Comunidad Todonto</a></li>
+        <li><a href="#">Contactar soporte</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Términos y condiciones</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Aviso de privacidad</a></li>
+        <li><a href="#">Política de cookies</a></li>
+        <li><a href="#">Acuerdo de nivel de servicio</a></li>
+        <li><a href="#">Reporte de vulnerabilidades</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Todonto, S.A. de C.V. · RFC: TOD260101ABC · Todos los derechos reservados.</span>
+    <div class="footer-legal-links">
+      <a href="#">Términos</a><span class="fdiv">|</span>
+      <a href="#">Privacidad</a><span class="fdiv">|</span>
+      <a href="#">Cookies</a><span class="fdiv">|</span>
+      <a href="#">Aviso legal</a><span class="fdiv">|</span>
+      <a href="#">Mapa del sitio</a>
+    </div>
+  </div>
+</footer>

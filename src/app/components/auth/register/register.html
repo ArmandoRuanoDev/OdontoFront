@@ -1,4 +1,4 @@
-<!-- NAV -->
+<!-- Nav -->
 <nav>
   <a href="/" class="nav-logo">
     <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -9,7 +9,6 @@
     Todonto
   </a>
   <ul class="nav-links">
-    <li><a href="#">Funciones</a></li>
     <li><a href="#">¿Cómo funciona?</a></li>
     <li><a href="#">Testimonios</a></li>
     <li><a href="#">Contacto</a></li>
@@ -17,85 +16,80 @@
   </ul>
 </nav>
 
-<!-- MAIN -->
+<!-- Main -->
 <div class="main-layout">
 
-  <!-- LEFT -->
+  <!-- Panel izquierdo -->
   <div class="left-panel">
     <div class="panel-content">
-      <div class="panel-badge"><span></span> Plataforma dental 100% pensada para tí</div>
-      <h2>Gestiona tu consultorio con <em>total confianza</em></h2>
-      <p>Todo lo que necesitas para atender más pacientes, en menos tiempo y sin complicaciones.</p>
+      <div class="panel-badge">
+        <span class="badge-dot"></span>
+        Seguridad en cada paso
+      </div>
+      <h2>Tu cuenta lista en <em>minutos</em></h2>
+      <p>Ingresa tus datos personales para comenzar con el registro.</p>
 
-      <div class="feat-list">
-        <div class="feat-item">
-          <div class="feat-ico">📅</div>
-          <div class="feat-item-text">
-            <strong>Agenda inteligente</strong>
-            <span>Recordatorios automáticos, reduce inasistencias hasta 40%</span>
+      <!-- Progress Steps -->
+      <div class="steps-visual">
+
+        <div class="step-item done-step">
+          <div class="step-circle active">1
+          </div>
+          <div class="step-body">
+            <strong>Datos de registro</strong>
+            <span>Ingresa tus datos para comenzar con tu registro en Todonto</span>
           </div>
         </div>
-        <div class="feat-item">
-          <div class="feat-ico">🦷</div>
-          <div class="feat-item-text">
-            <strong>Expedientes clínicos digitales</strong>
-            <span>Odontograma, radiografías y fotos en un solo lugar</span>
+
+        <div class="step-item pending-step">
+          <div class="step-circle pending">2</div>
+          <div class="step-body">
+            <strong>Verificación de correo</strong>
+            <span>Enviaremos un código por correo para validar tu correo</span>
           </div>
         </div>
-        <div class="feat-item">
-          <div class="feat-ico">🔒</div>
-          <div class="feat-item-text">
-            <strong>Seguridad bancaria</strong>
-            <span>Cifrado AES-256 y cumplimiento LFPDPPP</span>
+
+        <div class="step-item pending-step">
+          <div class="step-circle pending">3</div>
+          <div class="step-body">
+            <strong>Seleccionar plan</strong>
+            <span>Elige el plan que mejor se ajuste a tus necesidades</span>
           </div>
         </div>
+
       </div>
 
-      <div class="mini-dash">
-        <div class="mini-dash-top">
-          <span>Panel de hoy</span>
-          <span class="mini-badge">En vivo</span>
-        </div>
-        <div class="mini-stats">
-          <div class="mini-stat"><div class="mini-stat-n">124</div><div class="mini-stat-l">Pacientes</div></div>
-          <div class="mini-stat"><div class="mini-stat-n">8</div><div class="mini-stat-l">Citas hoy</div></div>
-          <div class="mini-stat"><div class="mini-stat-n">96%</div><div class="mini-stat-l">Asistencia</div></div>
-        </div>
-        <div class="mini-appt">
-          <div class="mini-dot" style="background:#5ba3e8"></div>
-          <div><div class="mini-appt-name">María López</div><div class="mini-appt-sub">Limpieza · 45 min</div></div>
-          <div class="mini-appt-time">09:00</div>
-        </div>
-        <div class="mini-appt">
-          <div class="mini-dot" style="background:#1D9E75"></div>
-          <div><div class="mini-appt-name">Carlos Herrera</div><div class="mini-appt-sub">Ortodoncia · 60 min</div></div>
-          <div class="mini-appt-time">10:00</div>
-        </div>
+      <!-- Security Badges -->
+      <div class="security-row">
+        <div class="sec-badge">🔒 Cifrado AES-256</div>
+        <div class="sec-badge">🛡️ LFPDPPP</div>
       </div>
     </div>
 
+    <!-- Testimonial 
     <div class="panel-quote">
-      <p>"Todonto transformó mi consultorio. Ahora tengo más tiempo para mis pacientes y cero papeleo."</p>
+      <p>"El proceso de registro fue muy sencillo. En menos de 5 minutos ya tenía mi consultorio configurado."</p>
       <div class="panel-quote-author">
-        <div class="pqa-av">RM</div>
+        <div class="pqa-av">JL</div>
         <div>
-          <div class="pqa-name">Dra. Rosa Mendoza</div>
-          <div class="pqa-role">Odontóloga general · Guadalajara</div>
+          <div class="pqa-name">Dr. Jorge López</div>
+          <div class="pqa-role">Odontólogo · Ciudad de México</div>
         </div>
       </div>
     </div>
+    -->
   </div>
 
-  <!-- RIGHT (form) -->
+  <!-- Right (form) -->
   <div class="right-panel">
     <div class="form-header">
       <h1>Crea tu cuenta</h1>
-      <p>Empieza gratis — (requiere tarjeta de credito o algún método de pago)</p>
+      <p>Empieza gratis.</p>
     </div>
 
     <div id="successToast" class="success-toast" style="display:none">
       <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6.5" stroke="#3B6D11" stroke-width="1.4"/><path d="M4.5 7.5l2.5 2.5 4-4" stroke="#3B6D11" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      ¡Cuenta creada exitosamente! Redirigiendo a tu panel...
+      ¡Cuenta creada exitosamente! Redirigiendo a la verificación..
     </div>
 
     <button class="btn-google" (click)="handleGoogle()">
@@ -113,7 +107,7 @@
     <div class="form-row">
       <div class="form-group no-mb">
         <label>Nombre(s) <span class="req">*</span></label>
-        <input type="text" id="nombre" placeholder="Ej. Juan Luis" [(ngModel)]="nombre" (input)="onInputChange('nombre')" (blur)="onBlur('nombre')" [class.valid]="errorMessages['nombre'] === '' && nombre" [class.invalid]="errorMessages['nombre'] && errorMessages['nombre'] !== ''"/>
+        <input type="text" id="nombre" placeholder="Ej. Juan Luis" [(ngModel)]="nombre" (keydown)="allowOnlyLetters($event)" (input)="onInputChange('nombre')" (blur)="onBlur('nombre')" [class.valid]="errorMessages['nombre'] === '' && nombre" [class.invalid]="errorMessages['nombre'] && errorMessages['nombre'] !== ''"/>
         <div class="field-msg" [class.error]="errorMessages['nombre']" [class.success]="!errorMessages['nombre'] && nombre">
           <ng-container *ngIf="errorMessages['nombre']">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/><path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -127,7 +121,7 @@
       </div>
       <div class="form-group no-mb">
         <label>Apellido paterno <span class="req">*</span></label>
-        <input type="text" id="ap_pat" placeholder="Ej. López" [(ngModel)]="ap_pat" (input)="onInputChange('ap_pat')" (blur)="onBlur('ap_pat')" [class.valid]="errorMessages['ap_pat'] === '' && ap_pat" [class.invalid]="errorMessages['ap_pat']"/>
+        <input type="text" id="ap_pat" placeholder="Ej. López" [(ngModel)]="ap_pat" (keydown)="allowOnlyLetters($event)" (input)="onInputChange('ap_pat')" (blur)="onBlur('ap_pat')" [class.valid]="errorMessages['ap_pat'] === '' && ap_pat" [class.invalid]="errorMessages['ap_pat']"/>
         <div class="field-msg" [class.error]="errorMessages['ap_pat']" [class.success]="!errorMessages['ap_pat'] && ap_pat">
           <ng-container *ngIf="errorMessages['ap_pat']">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/><path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -144,7 +138,7 @@
     <div class="form-row">
       <div class="form-group no-mb">
         <label>Apellido materno <span class="req">*</span></label>
-        <input type="text" id="ap_mat" placeholder="Ej. Pérez" [(ngModel)]="ap_mat" (input)="onInputChange('ap_mat')" (blur)="onBlur('ap_mat')" [class.valid]="errorMessages['ap_mat'] === '' && ap_mat" [class.invalid]="errorMessages['ap_mat']"/>
+        <input type="text" id="ap_mat" placeholder="Ej. Pérez" [(ngModel)]="ap_mat" (keydown)="allowOnlyLetters($event)" (input)="onInputChange('ap_mat')" (blur)="onBlur('ap_mat')" [class.valid]="errorMessages['ap_mat'] === '' && ap_mat" [class.invalid]="errorMessages['ap_mat']"/>
         <div class="field-msg" [class.error]="errorMessages['ap_mat']" [class.success]="!errorMessages['ap_mat'] && ap_mat">
           <ng-container *ngIf="errorMessages['ap_mat']">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/><path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -174,14 +168,30 @@
 
     <div class="form-group">
       <label>Correo electrónico <span class="req">*</span></label>
-      <input type="email" id="correo" placeholder="ejemplo@correo.com" [(ngModel)]="correo" (input)="onInputChange('correo')" (blur)="onBlur('correo')" [class.valid]="errorMessages['correo'] === '' && correo" [class.invalid]="errorMessages['correo']"/>
-      <div class="field-msg" [class.error]="errorMessages['correo']" [class.success]="!errorMessages['correo'] && correo">
-        <ng-container *ngIf="errorMessages['correo']">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/><path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <input type="email" id="correo" (keydown.space)="$event.preventDefault()" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="email" placeholder="ejemplo@correo.com" [(ngModel)]="correo" (input)="onInputChange('correo')" (blur)="onBlur('correo')" [class.valid]="correo && !errorMessages['correo']" [class.invalid]="!!errorMessages['correo']"/>
+      <div class="field-msg" [class.error]="serverErrors['correo'] || errorMessages['correo']" [class.success]="!serverErrors['correo'] && !errorMessages['correo'] && correo && rules.correo(correo) === ''">
+        <!-- Mostrar primero error del servidor si existe -->
+        <ng-container *ngIf="serverErrors['correo']">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/>
+          <path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+            {{ serverErrors['correo'] }}
+        </ng-container>
+        <!-- Si no hay error del servidor, mostrar error de validación -->
+        <ng-container *ngIf="!serverErrors['correo'] && errorMessages['correo']">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <circle cx="6" cy="6" r="5" stroke="#A32D2D" stroke-width="1.3"/>
+            <path d="M4 4l4 4M8 4l-4 4" stroke="#A32D2D" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
           {{ errorMessages['correo'] }}
         </ng-container>
-        <ng-container *ngIf="!errorMessages['correo'] && correo">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#3B6D11" stroke-width="1.3"/><path d="M3.5 6l2 2 3-3" stroke="#3B6D11" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- Mensaje de éxito solo si no hay errores de ningún tipo -->
+        <ng-container *ngIf="!serverErrors['correo'] && !errorMessages['correo'] && correo">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <circle cx="6" cy="6" r="5" stroke="#3B6D11" stroke-width="1.3"/>
+            <path d="M3.5 6l2 2 3-3" stroke="#3B6D11" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
           Correo válido.
         </ng-container>
       </div>
@@ -197,7 +207,7 @@
           <option value="+57">🇨🇴 +57</option>
           <option value="+54">🇦🇷 +54</option>
         </select>
-        <input type="tel" id="telefono" class="phone-num" placeholder="1234567890" maxlength="10" [(ngModel)]="telefono" (input)="onInputChange('telefono')" (blur)="onBlur('telefono')" [class.valid]="errorMessages['telefono'] === '' && telefono" [class.invalid]="errorMessages['telefono']"/>
+        <input inputmode="numeric" autocomplete="tel" pattern="[0-9]*" type="tel" id="telefono" class="phone-num" placeholder="1234567890" maxlength="12" [(ngModel)]="telefono" (keydown)="allowOnlyNumbers($event)" (input)="onInputChange('telefono')" (blur)="onBlur('telefono')" [class.valid]="errorMessages['telefono'] === '' && telefono" [class.invalid]="errorMessages['telefono']"/>
       </div>
       <div class="field-msg" [class.error]="errorMessages['telefono']" [class.success]="!errorMessages['telefono'] && telefono">
         <ng-container *ngIf="errorMessages['telefono']">
@@ -241,7 +251,7 @@
     <div class="form-group">
       <label>Contraseña <span class="req">*</span></label>
       <div class="pw-wrap">
-        <input type="password" id="password" placeholder="Mínimo 8 caracteres" [(ngModel)]="password" (input)="onInputChange('password')" (blur)="onBlur('password')" [class.valid]="errorMessages['password'] === '' && password" [class.invalid]="errorMessages['password']"/>
+        <input type="password" (keydown.space)="$event.preventDefault()" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" id="password" placeholder="Mínimo 8 caracteres" [(ngModel)]="password" (input)="onInputChange('password')" (blur)="onBlur('password')"/>
         <button type="button" class="pw-toggle" (click)="togglePassword('password')">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg>
         </button>
@@ -270,7 +280,7 @@
     <div class="form-group">
       <label>Confirmar contraseña <span class="req">*</span></label>
       <div class="pw-wrap">
-        <input type="password" id="password2" placeholder="Repite tu contraseña" [(ngModel)]="password2" (input)="onInputChange('password2')" (blur)="onBlur('password2')" [class.valid]="errorMessages['password2'] === '' && password2" [class.invalid]="errorMessages['password2']"/>
+        <input type="password" (keydown.space)="$event.preventDefault()" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" id="password2" placeholder="Repite tu contraseña" [(ngModel)]="password2" (input)="onInputChange('password2')" (blur)="onBlur('password2')"/>
         <button type="button" class="pw-toggle" (click)="togglePassword('password2')">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.4"/></svg>
         </button>
@@ -326,14 +336,14 @@
   </div>
 </div>
 
-<!-- FOOTER -->
+<!-- Footer -->
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
       <h3>🦷 Todonto</h3>
       <p>La plataforma de gestión dental más completa de México. Diseñada por y para odontólogos.</p>
-      <div class="footer-contact-item">📍 Av. Insurgentes Sur 1457, CDMX, C.P. 03920</div>
-      <div class="footer-contact-item">📞 +52 (55) 1234-5678</div>
+      <div class="footer-contact-item">📍 Calle San Luis 13, San Luis de la Paz, México, C.P. 37900</div>
+      <div class="footer-contact-item">📞 +52 (468) 138-6739</div>
       <div class="footer-contact-item">✉️ contacto@todonto.mx</div>
       <div class="footer-contact-item">🕐 Lun–Vie: 9:00–18:00 CST</div>
       <div class="footer-badges">
@@ -347,9 +357,6 @@
       <ul>
         <li><a href="#">Funcionalidades</a></li>
         <li><a href="#">Precios y planes</a></li>
-        <li><a href="#">Actualizaciones</a></li>
-        <li><a href="#">App móvil</a></li>
-        <li><a href="#">Integraciones</a></li>
         <li><a href="#">Estado del servicio</a></li>
       </ul>
     </div>
@@ -357,9 +364,6 @@
       <h4>Soporte</h4>
       <ul>
         <li><a href="#">Centro de ayuda</a></li>
-        <li><a href="#">Guías y tutoriales</a></li>
-        <li><a href="#">Webinars gratuitos</a></li>
-        <li><a href="#">API para desarrolladores</a></li>
         <li><a href="#">Comunidad Todonto</a></li>
         <li><a href="#">Contactar soporte</a></li>
       </ul>
