@@ -238,7 +238,7 @@ export class ChoosePlan implements OnInit, OnDestroy, AfterViewInit {
 
           // Redirigir al panel tras 2 segundos
           setTimeout(() => {
-            window.location.href = '/configure-panel';
+            window.location.href = '/configurar-panel';
           }, 2000);
         },
         error: (err) => {

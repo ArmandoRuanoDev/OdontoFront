@@ -12,6 +12,7 @@
     <li><a href="#">¿Cómo funciona?</a></li>
     <li><a href="#">Testimonios</a></li>
     <li><a href="#">Contacto</a></li>
+    <li><a href="/perfil" class="nav-cta">Ver Perfil</a></li>
   </ul>
 </nav>
 
@@ -28,29 +29,35 @@
 
   <!-- Formulario -->
   <div class="config-card">
+
     <!-- Sección 1: Logo del consultorio -->
     <div class="config-section">
       <div class="section-head">
         <div class="section-icon">🦷</div>
         <div>
-          <h3>Logo del consultorio</h3>
-          <p>Sube una imagen para identificar tu consultorio (opcional). Se mostrará en el panel y en algunos reportes.</p>
+          <h3>Logo del consultorio <span class="optional-tag">Opcional</span></h3>
+          <p>Sube una imagen para identificar tu consultorio. Se mostrará en el panel y en algunos reportes.</p>
         </div>
       </div>
+
       <div class="logo-upload-area" (click)="triggerFileInput()">
         <input type="file" hidden #fileInput accept="image/*" (change)="onFileSelected($event)">
+
         <div *ngIf="!logoPreview" class="upload-placeholder">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
             <path d="M16 8v16M8 16h16" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
             <rect x="2" y="2" width="28" height="28" rx="6" stroke="#cbd5e1" stroke-width="1.5"/>
           </svg>
           <span>Arrastra o haz clic para subir logo</span>
-          <small>PNG, JPG o SVG. Máx. 2 MB</small>
+          <small>PNG, JPG o SVG · Máx. 2 MB</small>
         </div>
+
         <div *ngIf="logoPreview" class="preview-wrap">
           <img [src]="logoPreview" alt="Vista previa del logo">
           <div class="preview-overlay" (click)="$event.stopPropagation(); eliminarLogo()">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M4 4l8 8M12 4l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </div>
         </div>
       </div>
@@ -61,32 +68,43 @@
       <div class="section-head">
         <div class="section-icon">⏰</div>
         <div>
-          <h3>Horario de atención</h3>
+          <h3>Horario de atención <span class="optional-tag">Opcional</span></h3>
           <p>Define los días y horas en los que trabajas para que las citas solo se agenden en esos periodos.</p>
         </div>
       </div>
 
+      <!-- Días -->
       <div class="days-grid">
-        <div *ngFor="let dia of diasSemana" class="day-card" [class.active]="dia.activo" (click)="toggleDia(dia)">
+        <div
+          *ngFor="let dia of diasSemana"
+          class="day-card"
+          [class.active]="dia.activo"
+          (click)="toggleDia(dia)"
+        >
           <span class="day-name">{{ dia.nombre }}</span>
           <span class="day-state">{{ dia.activo ? 'Laboral' : 'Descanso' }}</span>
         </div>
       </div>
 
+      <!-- Horario -->
       <div class="time-row">
         <div class="time-field">
           <label>Hora de apertura</label>
           <input type="time" [(ngModel)]="horaApertura">
         </div>
-        <div class="time-divider">a</div>
+        <div class="time-divider">—</div>
         <div class="time-field">
           <label>Hora de cierre</label>
           <input type="time" [(ngModel)]="horaCierre">
         </div>
+        <div class="time-field">
+          <label>Margen al final (min)</label>
+          <input type="number" [(ngModel)]="margenFin" min="0" max="120">
+        </div>
       </div>
     </div>
 
-    <!-- Sección 3: Tratamientos (opcional) -->
+    <!-- Sección 3: Tratamientos -->
     <div class="config-section">
       <div class="section-head">
         <div class="section-icon">📋</div>
@@ -96,26 +114,70 @@
         </div>
       </div>
 
-      <div class="treatments-list">
+      <!-- Lista de tratamientos añadidos -->
+      <div class="treatments-list" *ngIf="tratamientos.length > 0">
         <div *ngFor="let t of tratamientos; let i = index" class="treatment-item">
+          <span class="treat-color-dot" [style.background]="t.color"></span>
           <span class="treat-name">{{ t.nombre }}</span>
-          <span class="treat-time">{{ t.duracion }} min</span>
-          <button class="treat-remove" (click)="eliminarTratamiento(i)">×</button>
+          <span class="treat-time">{{ formatearDuracion(t.duracion_minutos) }}</span>
+          <button class="treat-remove" (click)="eliminarTratamiento(i)" title="Eliminar">×</button>
         </div>
       </div>
 
-      <div class="add-treatment-row">
-        <input type="text" placeholder="Nombre del tratamiento (ej. Limpieza dental)" [(ngModel)]="nuevoTratamiento" (keyup.enter)="agregarTratamiento()">
-        <input type="number" placeholder="Duración (min)" [(ngModel)]="nuevaDuracion" (keyup.enter)="agregarTratamiento()">
-        <button class="btn-add-treat" (click)="agregarTratamiento()">Agregar</button>
+      <!-- Formulario para añadir -->
+      <div class="add-treatment-form">
+
+        <!-- Fila 1: nombre · duración · botón -->
+        <div class="add-treatment-row">
+          <div class="form-field">
+            <label class="form-label">Nombre del tratamiento</label>
+            <input
+              type="text"
+              placeholder="Ej. Limpieza dental"
+              [(ngModel)]="nuevoTratamiento"
+              (keyup.enter)="agregarTratamiento()"
+            >
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Duración</label>
+            <div class="duration-selects">
+              <select [(ngModel)]="nuevaDuracionHoras" class="time-select">
+                <option *ngFor="let h of horas" [value]="h">{{ h }} h</option>
+              </select>
+              <select [(ngModel)]="nuevaDuracionMinutos" class="time-select">
+                <option *ngFor="let m of minutos" [value]="m">{{ m }} min</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field" style="justify-content: flex-end;">
+            <label class="form-label">&nbsp;</label>
+            <button class="btn-add-treat" (click)="agregarTratamiento()">+ Agregar</button>
+          </div>
+        </div>
+
+        <!-- Fila 2: descripción · costo -->
+        <div class="add-treatment-row-2">
+          <div class="form-field">
+            <label class="form-label">Descripción <span style="font-weight:400;text-transform:none;font-size:10px;color:#94a3b8">(opcional)</span></label>
+            <input type="text" placeholder="Breve descripción del tratamiento" [(ngModel)]="nuevaDescripcion">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Costo sugerido <span style="font-weight:400;text-transform:none;font-size:10px;color:#94a3b8">(opcional)</span></label>
+            <input type="number" placeholder="$ 0.00" [(ngModel)]="nuevoCosto" min="0">
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- Acciones finales -->
     <div class="config-actions">
       <button class="btn-skip" (click)="irAlPanel()">Omitir configuración</button>
-      <button class="btn-save" (click)="guardarEIr()">Guardar e ir al panel</button>
+      <button class="btn-save" (click)="guardarEIr()">Guardar e ir al panel →</button>
     </div>
+
   </div>
 </main>
 
