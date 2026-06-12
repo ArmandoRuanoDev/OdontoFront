@@ -5,174 +5,330 @@
       <rect width="34" height="34" rx="10" fill="#185FA5"/>
       <path d="M17 7C17 7 10 10.5 10 17.5C10 21.9 13.1 25.5 17 25.5C20.9 25.5 24 21.9 24 17.5C24 10.5 17 7 17 7Z" fill="white" opacity="0.9"/>
       <path d="M14 19L16.5 21.5L20.5 16" stroke="#185FA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="17" cy="11" r="1.5" fill="#185FA5" opacity="0.6"/>
     </svg>
     Todonto
   </a>
-  <ul class="nav-links">
-    <li><a href="#">¿Cómo funciona?</a></li>
-    <li><a href="#">Testimonios</a></li>
-    <li><a href="#">Contacto</a></li>
-    <li><a href="/perfil" class="nav-cta">Ver Perfil</a></li>
-  </ul>
+
+  <!-- Perfil de usuario -->
+  <div class="nav-profile" (click)="toggleProfileMenu()" [class.open]="profileMenuOpen">
+    <div class="profile-avatar">
+      <span>DM</span>
+    </div>
+    <div class="profile-name-wrap">
+      <span class="profile-greeting">Bienvenida,</span>
+      <span class="profile-name">Dra. Magdalena</span>
+    </div>
+    <svg class="profile-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <!-- Dropdown -->
+    <div class="profile-dropdown" (click)="$event.stopPropagation()">
+      <div class="dropdown-header">
+        <div class="dropdown-avatar">DM</div>
+        <div>
+          <div class="dropdown-name">Dra. Magdalena</div>
+          <div class="dropdown-email">magdalena&#64;todonto.mx</div>
+        </div>
+      </div>
+      <div class="dropdown-divider"></div>
+      <a href="#" class="dropdown-item">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Ver perfil
+      </a>
+      <a href="#" class="dropdown-item">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="2" y="2" width="11" height="11" rx="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M5 7.5h5M7.5 5v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Cuenta
+      </a>
+      <a href="#" class="dropdown-item">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.4"/><circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.4"/></svg>
+        Configuración
+      </a>
+      <div class="dropdown-divider"></div>
+      <a href="#" class="dropdown-item danger">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M6 2H3a1 1 0 00-1 1v9a1 1 0 001 1h3M10 10l3-2.5L10 5M13 7.5H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Cerrar sesión
+      </a>
+    </div>
+  </div>
 </nav>
 
+
 <main class="config-layout">
-  <!-- Encabezado -->
   <div class="config-header">
     <div class="ch-badge">
       <span class="badge-dot"></span>
       Paso final
     </div>
     <h1>Configura tu <em>consultorio</em></h1>
-    <p>Estos datos se usarán para personalizar tu panel, agendar citas y mostrar información a tus pacientes.</p>
+    <p>Estos datos personalizarán tu panel, calendario y la información visible para tus pacientes.</p>
   </div>
 
-  <!-- Formulario -->
   <div class="config-card">
 
-    <!-- Sección 1: Logo del consultorio -->
+    <!-- ══════════════════════════════════════
+         Sección 1: Logo
+    ══════════════════════════════════════ -->
     <div class="config-section">
       <div class="section-head">
-        <div class="section-icon">🦷</div>
+        <div class="section-icon">🖼️</div>
         <div>
           <h3>Logo del consultorio <span class="optional-tag">Opcional</span></h3>
-          <p>Sube una imagen para identificar tu consultorio. Se mostrará en el panel y en algunos reportes.</p>
+          <p>Se mostrará en tu panel y reportes. PNG, JPG o SVG, máximo 2 MB.</p>
         </div>
       </div>
 
-      <div class="logo-upload-area" (click)="triggerFileInput()">
-        <input type="file" hidden #fileInput accept="image/*" (change)="onFileSelected($event)">
+      <div class="logo-upload-area"
+           [class.upload-error]="errores.logo"
+           (click)="triggerFileInput()">
+        <input type="file" hidden #fileInput accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+               (change)="onFileSelected($event)">
 
         <div *ngIf="!logoPreview" class="upload-placeholder">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
             <path d="M16 8v16M8 16h16" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
             <rect x="2" y="2" width="28" height="28" rx="6" stroke="#cbd5e1" stroke-width="1.5"/>
           </svg>
-          <span>Arrastra o haz clic para subir logo</span>
+          <span>Arrastra o haz clic para subir</span>
           <small>PNG, JPG o SVG · Máx. 2 MB</small>
         </div>
 
         <div *ngIf="logoPreview" class="preview-wrap">
           <img [src]="logoPreview" alt="Vista previa del logo">
           <div class="preview-overlay" (click)="$event.stopPropagation(); eliminarLogo()">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
               <path d="M4 4l8 8M12 4l-8 8" stroke="white" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </div>
         </div>
       </div>
+      <div *ngIf="errores.logo" class="field-error" style="margin-top:8px">{{ errores.logo }}</div>
     </div>
 
-    <!-- Sección 2: Horario y días de trabajo -->
+    <!-- ══════════════════════════════════════
+         Sección 2: Horario
+    ══════════════════════════════════════ -->
     <div class="config-section">
       <div class="section-head">
         <div class="section-icon">⏰</div>
         <div>
           <h3>Horario de atención <span class="optional-tag">Opcional</span></h3>
-          <p>Define los días y horas en los que trabajas para que las citas solo se agenden en esos periodos.</p>
+          <p>Selecciona tus días laborales y el rango de horas en que atiendes pacientes.</p>
         </div>
       </div>
 
       <!-- Días -->
       <div class="days-grid">
-        <div
-          *ngFor="let dia of diasSemana"
-          class="day-card"
-          [class.active]="dia.activo"
-          (click)="toggleDia(dia)"
-        >
+        <div *ngFor="let dia of diasSemana"
+             class="day-card"
+             [class.active]="dia.activo"
+             (click)="toggleDia(dia)">
           <span class="day-name">{{ dia.nombre }}</span>
           <span class="day-state">{{ dia.activo ? 'Laboral' : 'Descanso' }}</span>
         </div>
       </div>
+      <div *ngIf="errores.dias" class="field-error" style="margin-bottom:16px">{{ errores.dias }}</div>
 
-      <!-- Horario -->
+      <!-- Horas -->
       <div class="time-row">
-        <div class="time-field">
-          <label>Hora de apertura</label>
-          <input type="time" [(ngModel)]="horaApertura">
+        <div class="form-field">
+          <label class="form-label">Hora de apertura</label>
+          <input type="time" class="field-input"
+                 [class.has-error]="errores.horario"
+                 [(ngModel)]="horaApertura"
+                 (change)="validarHorario()">
         </div>
         <div class="time-divider">—</div>
-        <div class="time-field">
-          <label>Hora de cierre</label>
-          <input type="time" [(ngModel)]="horaCierre">
+        <div class="form-field">
+          <label class="form-label">Hora de cierre</label>
+          <input type="time" class="field-input"
+                 [class.has-error]="errores.horario"
+                 [(ngModel)]="horaCierre"
+                 (change)="validarHorario()">
         </div>
-        <div class="time-field">
-          <label>Margen al final (min)</label>
-          <input type="number" [(ngModel)]="margenFin" min="0" max="120">
+        <div class="form-field">
+          <label class="form-label">Margen final</label>
+          <select class="field-input" [(ngModel)]="margenFin">
+            <option *ngFor="let m of margen" [value]="m">{{ m }} min</option>
+          </select>
         </div>
       </div>
+      <div *ngIf="errores.horario" class="field-error" style="margin-top:8px">{{ errores.horario }}</div>
     </div>
 
-    <!-- Sección 3: Tratamientos -->
+    <!-- ══════════════════════════════════════
+         Sección 3: Notación odontograma
+    ══════════════════════════════════════ -->
     <div class="config-section">
       <div class="section-head">
-        <div class="section-icon">📋</div>
+        <div class="section-icon">🦷</div>
         <div>
-          <h3>Tratamientos <span class="optional-tag">Opcional</span></h3>
-          <p>Agrega los tratamientos que realizas para que aparezcan en tu panel y puedas asignarlos a las citas.</p>
+          <h3>Notación del odontograma <span class="optional-tag">Opcional</span></h3>
+          <p>Elige el sistema de numeración dental que prefieras. Podrás cambiarlo después.</p>
         </div>
       </div>
 
-      <!-- Lista de tratamientos añadidos -->
-      <div class="treatments-list" *ngIf="tratamientos.length > 0">
-        <div *ngFor="let t of tratamientos; let i = index" class="treatment-item">
-          <span class="treat-color-dot" [style.background]="t.color"></span>
-          <span class="treat-name">{{ t.nombre }}</span>
-          <span class="treat-time">{{ formatearDuracion(t.duracion_minutos) }}</span>
-          <button class="treat-remove" (click)="eliminarTratamiento(i)" title="Eliminar">×</button>
-        </div>
-      </div>
-
-      <!-- Formulario para añadir -->
-      <div class="add-treatment-form">
-
-        <!-- Fila 1: nombre · duración · botón -->
-        <div class="add-treatment-row">
-          <div class="form-field">
-            <label class="form-label">Nombre del tratamiento</label>
-            <input
-              type="text"
-              placeholder="Ej. Limpieza dental"
-              [(ngModel)]="nuevoTratamiento"
-              (keyup.enter)="agregarTratamiento()"
-            >
+      <div class="notation-grid">
+        <div *ngFor="let n of notaciones"
+             class="notation-card"
+             [class.active]="notacionOdontograma === n.valor"
+             (click)="notacionOdontograma = n.valor">
+          <div class="notation-radio">
+            <div class="notation-radio-dot"></div>
           </div>
-
-          <div class="form-field">
-            <label class="form-label">Duración</label>
-            <div class="duration-selects">
-              <select [(ngModel)]="nuevaDuracionHoras" class="time-select">
-                <option *ngFor="let h of horas" [value]="h">{{ h }} h</option>
-              </select>
-              <select [(ngModel)]="nuevaDuracionMinutos" class="time-select">
-                <option *ngFor="let m of minutos" [value]="m">{{ m }} min</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-field" style="justify-content: flex-end;">
-            <label class="form-label">&nbsp;</label>
-            <button class="btn-add-treat" (click)="agregarTratamiento()">+ Agregar</button>
+          <div class="notation-info">
+            <strong>{{ n.label }}</strong>
+            <span>{{ n.desc }}</span>
           </div>
         </div>
-
-        <!-- Fila 2: descripción · costo -->
-        <div class="add-treatment-row-2">
-          <div class="form-field">
-            <label class="form-label">Descripción <span style="font-weight:400;text-transform:none;font-size:10px;color:#94a3b8">(opcional)</span></label>
-            <input type="text" placeholder="Breve descripción del tratamiento" [(ngModel)]="nuevaDescripcion">
-          </div>
-          <div class="form-field">
-            <label class="form-label">Costo sugerido <span style="font-weight:400;text-transform:none;font-size:10px;color:#94a3b8">(opcional)</span></label>
-            <input type="number" placeholder="$ 0.00" [(ngModel)]="nuevoCosto" min="0">
-          </div>
-        </div>
-
       </div>
     </div>
 
-    <!-- Acciones finales -->
+    <!-- ══════════════════════════════════════
+     Sección 4: Tratamientos
+══════════════════════════════════════ -->
+<div class="config-section">
+  <div class="section-head">
+    <div class="section-icon">📋</div>
+    <div>
+      <h3>Tratamientos <span class="optional-tag">Opcional</span></h3>
+      <p>Agrégalos para asignarlos a citas y llevar un mejor seguimiento clínico.</p>
+    </div>
+  </div>
+
+  <!-- Lista de tratamientos agregados -->
+  <div class="treatments-list" *ngIf="tratamientos.length > 0">
+    <div *ngFor="let t of tratamientos; let i = index" class="treatment-item">
+      <span class="treat-color-dot" [style.background]="t.color"></span>
+      <div class="treat-main-info">
+        <span class="treat-name">{{ t.nombre }}</span>
+        <span *ngIf="t.descripcion" class="treat-desc">{{ t.descripcion }}</span>
+      </div>
+      <div class="treat-tags">
+        <span *ngIf="t.requiere_odontograma" class="treat-badge">🦷 Odontograma</span>
+        <span *ngIf="t.costo_sugerido" class="treat-badge treat-badge-cost">
+          ${{ t.costo_sugerido | number:'1.0-0' }}
+        </span>
+        <span class="treat-time">{{ formatearDuracion(t.duracion_minutos) }}</span>
+      </div>
+      <button class="treat-remove" (click)="eliminarTratamiento(i)" title="Eliminar">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Formulario de nuevo tratamiento -->
+  <div class="add-treatment-form">
+
+    <!-- Fila A: Nombre del tratamiento (ancho completo) -->
+    <div class="form-field">
+      <label class="form-label">Nombre del tratamiento</label>
+      <input type="text"
+             class="treat-input"
+             placeholder="Ej. Limpieza dental"
+             [class.has-error]="errores.nombreTratamiento"
+             [ngModel]="nuevoTratamiento"
+             (ngModelChange)="onNombreChange($event)"
+             (keyup.enter)="agregarTratamiento()">
+      <div *ngIf="errores.nombreTratamiento" class="field-error">{{ errores.nombreTratamiento }}</div>
+    </div>
+
+    <!-- Fila B: Duración (horas + minutos en una fila) -->
+    <div class="form-field">
+      <label class="form-label">Duración estimada</label>
+      <div class="duration-row">
+  <select class="field-input"
+          [class.has-error]="errores.duracion"
+          [(ngModel)]="nuevaDuracionHoras"
+          (change)="validarDuracion()">
+    <option *ngFor="let h of horas" [value]="h">{{ h }} h</option>
+  </select>
+  <select class="field-input"
+          [class.has-error]="errores.duracion"
+          [(ngModel)]="nuevaDuracionMinutos"
+          (change)="validarDuracion()">
+    <option *ngFor="let m of minutos" [value]="m">{{ m }} min</option>
+  </select>
+  <span class="duration-preview" *ngIf="duracionPreview">
+    = {{ duracionPreview }}
+  </span>
+</div>
+      <div *ngIf="errores.duracion" class="field-error">{{ errores.duracion }}</div>
+    </div>
+
+    <!-- Fila C: Descripción (ancho completo) -->
+    <div class="form-field">
+      <label class="form-label">
+        Descripción
+        <span class="field-hint">(opcional)</span>
+      </label>
+      <input type="text"
+             class="treat-input"
+             placeholder="Breve descripción del procedimiento"
+             [class.has-error]="errores.descripcion"
+             [ngModel]="nuevaDescripcion"
+             (ngModelChange)="onDescripcionChange($event)"
+             maxlength="255">
+      <div class="field-row-end">
+        <div *ngIf="errores.descripcion" class="field-error">{{ errores.descripcion }}</div>
+        <span class="char-counter"
+              [class.near-limit]="nuevaDescripcion.length > 200 && nuevaDescripcion.length <= 245"
+              [class.at-limit]="nuevaDescripcion.length > 245">
+          {{ nuevaDescripcion.length }}/255
+        </span>
+      </div>
+    </div>
+
+    <!-- Fila D: Costo (medio ancho) -->
+    <div class="form-field">
+      <label class="form-label">
+        Costo sugerido
+        <span class="field-hint">(opcional)</span>
+      </label>
+      <div class="cost-input-wrap">
+        <span class="cost-prefix">$</span>
+        <input type="number"
+               class="treat-input cost-input"
+               placeholder="0.00"
+               [class.has-error]="errores.costo"
+               [(ngModel)]="nuevoCosto"
+               (input)="validarCosto()"
+               min="0" step="0.01">
+      </div>
+      <div *ngIf="errores.costo" class="field-error">{{ errores.costo }}</div>
+    </div>
+
+    <!-- Fila E: Toggle odontograma -->
+    <div class="form-field">
+      <label class="form-label">Opciones</label>
+      <div class="toggle-row" (click)="nuevoRequiereOdontograma = !nuevoRequiereOdontograma">
+        <div class="toggle-track" [class.on]="nuevoRequiereOdontograma">
+          <div class="toggle-thumb"></div>
+        </div>
+        <div class="toggle-label-wrap">
+          <span class="toggle-label-text">Requiere odontograma</span>
+          <span class="toggle-label-sub">El paciente deberá marcar piezas dentales afectadas</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fila F: Botón — siempre al final, ancho completo -->
+    <div class="treat-form-footer">
+      <button class="btn-add-treat" (click)="agregarTratamiento()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Agregar tratamiento
+      </button>
+    </div>
+
+  </div>
+</div>
+
+    <!-- Acciones -->
     <div class="config-actions">
       <button class="btn-skip" (click)="irAlPanel()">Omitir configuración</button>
       <button class="btn-save" (click)="guardarEIr()">Guardar e ir al panel →</button>

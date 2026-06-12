@@ -4,4 +4,5 @@ export interface Tratamiento {
   descripcion?: string;
   costo_sugerido?: number;
   color?: string;
+  requiere_odontograma?: boolean;
 }

@@ -32,6 +32,7 @@ export class DocService {
    */
   obtenerConfiguracion(): Observable<{
     logo_url: string | null;
+    notacion_odontograma: string | 'FDI';
     horarios: any[];
     tratamientos: any[];
   }> {
