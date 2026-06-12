@@ -90,31 +90,29 @@ export class AuthService {
     });
   }
 
-  /**
-   * Guarda el token en session storage.
-   */
   saveAccessToken(token: string): void {
-    this.accessToken = token;
+  this.accessToken = token;
+
+  if (typeof window !== 'undefined') {
     sessionStorage.setItem('access_token', token);
   }
+}
 
-  /**
-   * Obtiene el token actual.
-   */
-  getAccessToken(): string | null {
-    if (!this.accessToken) {
-        this.accessToken = sessionStorage.getItem('access_token');
-    }
-    return this.accessToken;
+getAccessToken(): string | null {
+  if (!this.accessToken && typeof window !== 'undefined') {
+    this.accessToken = sessionStorage.getItem('access_token');
   }
 
-  /**
-   * Limpia el token actual para cerrar sesión.
-   */
-  clearSession(): void {
-    this.accessToken = null;
+  return this.accessToken;
+}
+
+clearSession(): void {
+  this.accessToken = null;
+
+  if (typeof window !== 'undefined') {
     sessionStorage.removeItem('access_token');
   }
+}
 
   /**
    * Intenta reanudar la sesión usando la cookie de refresh token.
